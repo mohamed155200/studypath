@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>StudyPath</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0d0a22"><meta name="mobile-web-app-capable" content="yes"><link rel="icon" type="image/png" href="favicon.png"><link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0d0a22; --bg-2:#141033; --card:rgba(255,255,255,.045);
+  --border:rgba(167,139,250,.2); --text:#f3f0ff; --muted:#9a93c4;
+  --primary:#7c5cf0; --primary-2:#a78bfa; --teal:#2dd4bf; --blue:#60a5fa;
+  --warn:#fb923c; --danger:#f87171; --ok:#4ade80;
+  --grad:linear-gradient(135deg,#6d4fe0,#9b7bff);
+  --r-sm:10px; --r:16px; --r-lg:22px;
+  --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
+  --shadow:0 8px 28px rgba(8,4,30,.45); --glow:0 0 24px rgba(124,92,240,.25);
+  --font:"IBM Plex Sans Arabic","Segoe UI",Tahoma,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--font);color:var(--text);min-height:100vh;background:radial-gradient(900px 500px at 80% -10%,#2a1b6b55,transparent),var(--bg)}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{background:var(--bg-2);border-inline-end:1px solid var(--border);padding:var(--s5) var(--s4);display:flex;flex-direction:column;gap:var(--s2);position:sticky;top:0;height:100vh}
+.brand{font-size:22px;font-weight:700;margin-bottom:var(--s5);display:flex;gap:var(--s2);align-items:center}
+.brand i{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-style:normal}
+.nav a{display:flex;gap:var(--s3);align-items:center;padding:10px var(--s3);border-radius:var(--r-sm);color:var(--muted);text-decoration:none;font-size:15px;transition:.2s}
+.nav a:hover{background:var(--card);color:var(--text)}
+.nav a.active{background:var(--grad);color:#fff;box-shadow:var(--glow)}
+.nav small{display:block;font-size:11px;opacity:.7}
+main{padding:var(--s6);max-width:980px;width:100%}
+h1{font-size:24px;margin-bottom:4px}.sub{color:var(--muted);font-size:14px;margin-bottom:var(--s5)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s5);box-shadow:var(--shadow);margin-bottom:var(--s4)}
+.card.hero{background:linear-gradient(135deg,#2a1b6b66,#16124088)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:var(--s4)}
+.btn{background:var(--grad);color:#fff;border:0;border-radius:var(--r);padding:12px 22px;font:inherit;cursor:pointer;text-decoration:none;box-shadow:var(--glow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:var(--s3)}
+.tile{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:var(--s4);text-align:center;color:var(--text);text-decoration:none}
+.tile:hover{border-color:var(--primary-2)}
+.ring{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--teal) calc(var(--p)*1%),#ffffff14 0)}
+.ring div{width:88px;height:88px;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;text-align:center;font-size:22px;font-weight:700}
+.ring small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.muted{color:var(--muted);font-size:13px}.empty{text-align:center;padding:var(--s6);color:var(--muted)}
+@media(max-width:800px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset:auto 0 0 0;height:auto;flex-direction:row;overflow-x:auto;z-index:5;padding:var(--s2);border-top:1px solid var(--border)}
+  .brand,.nav small{display:none}.nav{display:flex}.nav a{flex-direction:column;font-size:11px;padding:8px}
+  main{padding:var(--s4) var(--s4) 96px}
+}
+.start{min-height:100vh;display:grid;place-items:center;padding:24px}
+.start-card{width:100%;max-width:340px;min-height:520px;border-radius:28px;padding:36px 24px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;background:radial-gradient(260px 200px at 50% 70%,#6d4fe055,transparent),linear-gradient(180deg,#1a1342,#0f0b2b);border:1px solid var(--border);box-shadow:var(--shadow),var(--glow)}
+.start-card h1{font-size:32px;margin:8px 0 14px;letter-spacing:.3px}
+.start-card p{font-size:18px;line-height:1.7;color:var(--text);max-width:230px}
+.start-art{width:100%;margin:auto 0 8px}
+.dots{display:flex;gap:7px;margin:8px 0 18px}.dots i{width:6px;height:6px;border-radius:50%;background:#ffffff40}.dots i.on{background:#fff}
+.start-card .btn{width:100%;font-size:17px;padding:14px;border-radius:999px}
+.wiz{width:100%;max-width:340px;min-height:520px;position:relative;border-radius:28px;padding:64px 22px 26px;display:flex;flex-direction:column;background:linear-gradient(180deg,#1a1342,#0f0b2b);border:1px solid var(--border);box-shadow:var(--shadow),var(--glow)}
+.back{position:absolute;top:20px;left:20px;background:none;border:0;color:var(--text);font-size:22px;cursor:pointer}
+.steps{position:absolute;top:26px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.steps i{width:9px;height:9px;border-radius:50%;background:#ffffff30}.steps i.on{width:34px;border-radius:9px;background:var(--grad)}
+.wiz h2{font-size:24px;text-align:center;margin-bottom:10px}.wiz .lead{text-align:center;color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:22px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:right;color:var(--text);font:inherit;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:14px;cursor:pointer;transition:.2s}
+.opt.sel{background:rgba(124,92,240,.2);border-color:var(--primary-2);box-shadow:var(--glow)}
+.opt .t{flex:1}.opt b{display:block;font-size:17px;direction:ltr;text-align:right}.opt .m{font-size:14px;color:var(--muted)}.opt .m span{direction:ltr;unicode-bidi:embed}
+.opt svg{color:var(--primary-2)}
+.radio{width:22px;height:22px;border-radius:50%;border:2px solid #ffffff50;display:grid;place-items:center}
+.sel .radio{border-color:var(--primary-2)}.sel .radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--primary-2)}
+.wiz .btn{margin-top:auto;width:100%;border-radius:999px;padding:14px;font-size:17px}
+.loader{margin:auto;text-align:center;color:var(--muted)}
+.spin{width:44px;height:44px;margin:0 auto 14px;border-radius:50%;border:4px solid #ffffff20;border-top-color:var(--primary-2);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.frow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.frow label{flex:1;font-size:15px;line-height:1.5}.frow label small{display:block;color:var(--muted);font-size:13px}
+.fld{width:150px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 12px;color:var(--text);font:inherit;text-align:center;outline:0}
+.fld:focus{border-color:var(--primary-2);box-shadow:var(--glow)}.fld.err{border-color:var(--danger)}
+select.fld{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#a78bfa 50%),linear-gradient(135deg,#a78bfa 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+select.fld option{background:#1a1342}
+.ctable{border:1px solid var(--border);border-radius:var(--r);background:var(--card);overflow:hidden;margin-bottom:14px}
+.chead,.crow{display:grid;grid-template-columns:1fr 60px 92px 32px;align-items:center;gap:6px;padding:8px 12px}
+.chead{font-size:12px;color:var(--muted);background:rgba(255,255,255,.04)}.chead span:nth-child(n+2){text-align:center}
+.crow{border-top:1px solid var(--border)}
+.ci{background:transparent;border:0;color:var(--text);font:inherit;font-size:16px;width:100%;padding:7px 4px;outline:0;border-radius:8px;-moz-appearance:textfield}
+.ci::-webkit-inner-spin-button{display:none}.ci.nm{text-align:right}.ci.hrs,.ci.mid{text-align:center}
+.ci:focus{background:rgba(255,255,255,.07)}.ci.err{box-shadow:0 0 0 1px var(--danger)}
+.del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:15px;padding:4px}.del:hover{color:var(--danger)}
+.add{align-self:flex-start;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:10px 16px;font:inherit;font-size:14px;cursor:pointer}
+.add:hover{border-color:var(--primary-2)}
+.dash{position:relative;width:100%;max-width:360px;min-height:560px;border-radius:28px;padding:22px 20px 20px;display:flex;flex-direction:column;background:linear-gradient(180deg,#1a1342,#0f0b2b);border:1px solid var(--border);box-shadow:var(--shadow),var(--glow)}
+.dtop{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px}
+.ic{background:none;border:0;color:var(--text);font-size:20px;cursor:pointer;padding:4px;position:relative;z-index:4}
+.dgreet{flex:1}.dgreet h2{font-size:20px}.dgreet p{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.6}
+.gcard{display:flex;align-items:center;gap:12px;border-radius:var(--r);padding:16px 18px;margin-bottom:14px;background:linear-gradient(135deg,rgba(124,92,240,.3),rgba(124,92,240,.08));border:1px solid var(--border)}
+.gcard .l{flex:1}.gcard .gt{font-size:15px;font-weight:600;margin-bottom:10px}.gcard .gn{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:600;direction:ltr;justify-content:flex-end}
+.gcard .gn svg{color:var(--primary-2)}.gcard .gs{font-size:12.5px;color:var(--muted);margin-top:6px;direction:ltr;text-align:right}
+.gcard .ring{width:96px;height:96px}.gcard .ring div{width:76px;height:76px;font-size:20px}
+.tcard{display:block;width:100%;font:inherit;color:var(--text);text-align:right;border-radius:var(--r);padding:16px 18px;margin-bottom:14px;cursor:pointer;background:rgba(124,92,240,.14);border:1px solid var(--border)}
+.tcard .tl{font-size:15px;font-weight:600;margin-bottom:10px}.tcard .tr{display:flex;align-items:center;gap:12px}
+.tcard .tx{flex:1;text-align:center}.tcard .tx b{display:block;font-size:17px;direction:ltr}.tcard .tx span{font-size:13px;color:var(--muted)}
+.tcard .pl{width:46px;height:46px;border-radius:50%;background:var(--grad);display:grid;place-items:center;box-shadow:var(--glow)}
+.tcard .ch{color:var(--muted);font-size:20px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:auto}
+.tile2{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 2px 10px;font:inherit;font-size:13px;color:var(--text);cursor:pointer;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px}
+.tile2 svg{color:var(--primary-2)}.tile2:hover{border-color:var(--primary-2)}
+.drawer{position:absolute;inset:0;z-index:3;display:none;flex-direction:column;gap:6px;padding:64px 20px 20px;border-radius:28px;background:rgba(12,8,34,.97)}
+.drawer.open{display:flex;overflow:auto}
+.dnav{background:none;border:0;color:var(--text);font:inherit;font-size:16px;text-align:right;padding:11px 12px;border-radius:12px;cursor:pointer}.dnav:hover{background:var(--card)}
+.toast{position:absolute;top:60px;left:50%;transform:translateX(-50%);z-index:5;background:#2b2160;border:1px solid var(--border);border-radius:12px;padding:8px 14px;font-size:13px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+.pwrap{padding-top:26px}.ptitle{font-size:22px;text-align:right;margin:0 0 18px;padding-left:36px}
+.seg{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--border);margin-bottom:16px}
+.seg button{flex:1;border:0;background:none;color:var(--muted);font:inherit;font-size:15px;padding:9px 4px;border-radius:11px;cursor:pointer}
+.seg button.on{background:var(--grad);color:#fff;box-shadow:var(--glow)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.chip{flex:1;min-width:48px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit;font-size:14px;padding:9px 4px;border-radius:999px;cursor:pointer}.chip.on{background:var(--grad);border-color:var(--primary-2);box-shadow:var(--glow)}
+.fring{width:190px;height:190px;border-radius:50%;margin:6px auto 16px;display:grid;place-items:center;background:conic-gradient(var(--primary-2) calc(var(--p)*1%),#ffffff14 0)}.fring>div{width:164px;height:164px;border-radius:50%;background:#150f38;display:grid;place-content:center;text-align:center}.fring b{font-size:36px;display:block;direction:ltr}.fring small{color:var(--muted);font-size:13px}
+.fctl{display:flex;justify-content:center;align-items:center;gap:18px;margin-bottom:16px;direction:ltr}.fb{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:16px;cursor:pointer}.fb.main{width:56px;height:56px;background:var(--grad);box-shadow:var(--glow);font-size:20px}
+.fph.done{opacity:.45}
+.srow{display:flex;align-items:center;gap:12px;width:100%;padding:15px 14px;background:none;border:0;border-top:1px solid rgba(167,139,250,.12);color:var(--text);font:inherit;font-size:15px;text-align:right;cursor:pointer}.srow:first-child{border-top:0}.srow b{flex:1;font-weight:500}.srow .ch{color:var(--muted);font-size:18px}
+.tg{width:50px;height:28px;border-radius:999px;background:#ffffff30;position:relative;border:0;cursor:pointer;flex:none;direction:ltr}.tg::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}.tg.on{background:var(--grad)}.tg.on::after{left:25px}
+html.light{--bg:#f4f1ff;--bg-2:#fff;--card:rgba(124,92,240,.07);--border:rgba(124,92,240,.28);--text:#1b1740;--muted:#5a5480;--shadow:0 8px 28px rgba(80,60,160,.18);--glow:0 0 18px rgba(124,92,240,.22)}
+html.light body{background:radial-gradient(900px 500px at 80% -10%,#d9ceff,transparent),var(--bg)}
+html.light .wiz,html.light .start-card{background:linear-gradient(180deg,#fff,#efe9ff)}
+html.light .mbox,html.light select.fld option{background:#fff}
+html.light .fring>div,html.light .ring div{background:#f4f1ff}
+html.light .modal{background:rgba(235,230,255,.93)}
+html.light .toast{background:#ece6ff;color:#1b1740}
+html.light .sec,html.light .stats,html.light .acard,html.light .seg,html.light .ctable,html.light .prow{background:rgba(124,92,240,.06)}
+html.light .tg,html.light .chip{background:rgba(124,92,240,.15)}
+html.light .rd{border-color:rgba(124,92,240,.5)}
+.wl{display:flex;justify-content:space-between;direction:ltr;font-size:11px;color:var(--muted);margin-top:6px;padding:0 4px}
+.wdays{display:flex;gap:4px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}.wdays button{flex:none;background:none;border:0;color:var(--muted);font:inherit;font-size:13px;padding:7px 10px;border-radius:10px;cursor:pointer}.wdays button.on{background:var(--grad);color:#fff}
+.wk{border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid;display:flex;flex-direction:column;gap:4px;text-align:right}.wk b{font-size:16px}.wk span{font-size:13px;color:var(--muted);direction:ltr;text-align:right}
+.wk.c0{background:rgba(96,165,250,.14);border-color:var(--blue)}.wk.c1{background:rgba(45,212,191,.12);border-color:var(--teal)}.wk.c2{background:rgba(167,139,250,.16);border-color:var(--primary-2)}.wk.c3{background:rgba(251,146,60,.13);border-color:var(--warn)}.fph.cur b,.fph.cur span{color:var(--primary-2)}
+.prow{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px;border-radius:14px;background:var(--card);border:1px solid var(--border)}
+.prow .num{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.07);font-size:15px}
+.prow .px{flex:1;text-align:right}.prow .px b{display:block;font-size:16px}.prow .px span{font-size:13px;color:var(--muted)}
+.prow.done .px b{text-decoration:line-through;opacity:.55}
+.rd{width:26px;height:26px;border-radius:50%;border:2px solid #ffffff55;background:none;cursor:pointer;color:#0d0a22;font-size:15px;line-height:1;display:grid;place-items:center}
+.prow.done .rd{background:var(--teal);border-color:var(--teal)}
+.pfoot{display:flex;align-items:center;gap:12px;margin-top:auto;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:14px}
+.pfoot .bar{flex:1;height:6px;border-radius:6px;background:#ffffff1c;overflow:hidden}.pfoot .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--teal));transition:.3s}
+.acard{padding:16px 18px;margin-bottom:16px;border-radius:var(--r);background:rgba(255,255,255,.04);border:1px solid var(--border);text-align:right}
+.acard b{display:block;font-size:22px;direction:ltr;text-align:right;margin-bottom:8px}
+.bdg{display:inline-block;padding:4px 12px;border-radius:999px;font-size:13px;background:rgba(74,222,128,.15);color:var(--ok);border:1px solid rgba(74,222,128,.4)}
+.ah{font-size:17px;text-align:right;margin:2px 0 12px}
+.req{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px;border-radius:14px;border:1px solid var(--border);background:var(--card)}
+.req .rt{flex:1;text-align:right}.req .rt b{display:block;font-size:16px;direction:ltr;text-align:right}.req .rt span{font-size:13px}
+.req .ri{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:15px;color:#0d0a22}
+.req.g{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5)}.req.g span{color:var(--ok)}.req.g .ri{background:var(--ok)}
+.req.o{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.5)}.req.o span{color:var(--warn)}.req.o .ri{background:var(--warn)}
+.req.s{background:rgba(255,255,255,.04)}.req.s span{color:var(--muted)}.req.s .ri{background:#6b6590}
+.crs{width:100%;font:inherit;color:var(--text);cursor:pointer}.crs:hover{border-color:var(--primary-2)}.crs .ch{color:var(--muted);font-size:20px}
+.ctl{text-align:center;font-size:22px;margin:0 0 18px}
+.ecard{display:flex;align-items:center;gap:12px;width:100%;font:inherit;color:var(--text);cursor:pointer;padding:14px 16px;margin-bottom:10px;border-radius:14px;background:var(--card);border:1px solid var(--border);text-align:right}
+.ecard:hover{border-color:var(--primary-2)}.ecard .et{flex:1}.ecard b{display:block;font-size:17px;margin-bottom:3px}.ecard small{font-weight:400;color:var(--muted);font-size:12px}
+.ecard .ed{display:block;font-size:13.5px;color:#d8d2f5}.ecard .er{display:block;font-size:13.5px;margin-top:2px}.ecard svg{color:var(--primary-2);flex:none}
+.wiz .addx{margin-top:auto;font-size:16px;padding:12px}
+.atiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.atiles button{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px;font:inherit;font-size:12px;color:var(--text);cursor:pointer;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:14px}
+.atiles button:hover{border-color:var(--primary-2)}.atiles svg{color:var(--primary-2)}
+.modal{display:none;position:absolute;inset:0;z-index:6;align-items:center;justify-content:center;padding:18px;border-radius:28px;background:rgba(10,6,30,.9)}.modal.open{display:flex}
+.mbox{width:100%;padding:18px;border-radius:18px;background:#1a1342;border:1px solid var(--border)}.mbox h3{text-align:center;margin-bottom:14px}
+.mbox .fld{width:165px}.mrow{display:flex;gap:8px;margin-top:14px}.mrow .btn,.mrow .add{flex:1;margin:0;width:auto;padding:11px;font-size:15px;border-radius:12px;align-self:auto}
+.mrow .dng{color:var(--danger);border-color:rgba(248,113,113,.5)}
+.acc{display:flex;justify-content:space-between;align-items:center;width:100%;font:inherit;font-size:16px;color:var(--text);padding:13px 16px;margin-bottom:12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--border);cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);padding:12px 4px;margin-bottom:14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--border);text-align:center}
+.stats small{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.stats b{font-size:24px}
+.sec{padding:14px;margin-bottom:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.vr{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;border-radius:12px;border:1px solid}
+.vr.r{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.4)}.vr.g{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.4)}
+.vr .rv{text-align:center;min-width:56px}.vr .rv small{display:block;font-size:12px;color:var(--muted)}.vr .rv b{font-size:20px}
+.vr .rt{flex:1;text-align:right}.vr .rt b{display:block;font-size:14px}.vr.r .rt b{color:#f87171}.vr.g .rt b{color:var(--teal)}
+.vr .rt span{font-size:13px;color:var(--muted)}.vr.r .rt span{color:#fbbf24}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:8px 0;font-size:14px;border-top:1px solid rgba(167,139,250,.12)}.kv span{color:var(--muted)}
+.row2{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.row2 b{font-size:17px}.row2 span{font-size:13px;color:var(--primary-2);direction:ltr}
+.note{font-size:12px;color:var(--muted);text-align:right;line-height:1.7;margin-bottom:10px}
+@media(min-width:900px){.wiz,.dash{max-width:520px}.start-card{max-width:380px}}
+.hm i{border-radius:3px;display:block}
+:focus-visible{outline:2px solid var(--primary-2);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>// CGPA = (cgpa*H + gpa*h) / (H + h)
+const AI_ENDPOINT = ''; // ضع هنا رابط الـ Worker (أو اضبطه من الإعدادات)
+if (!(window.claude && typeof window.claude.use === 'function')) {
+  const lsGet = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+  const parseJson = (t) => {
+    t = String(t || '').replace(/```json|```/g, '').trim();
+    try { return JSON.parse(t); } catch (e) { const m = t.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); throw new Error('not json'); }
+  };
+  window.claude = { use: async () => {
+    const gKey = lsGet('unitrack:gemini'), url = lsGet('unitrack:ai') || AI_ENDPOINT;
+    if (gKey) {
+      const model = lsGet('unitrack:gmodel') || 'gemini-flash-latest';
+      return { json: async (prompt) => {
+        const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': gKey },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: 'You are a helpful study assistant. Reply with a single valid JSON object only.' }] },
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json' }
+          })
+        });
+        if (!r.ok) throw new Error('gemini ' + r.status);
+        const d = await r.json();
+        const parts = (((d.candidates || [])[0] || {}).content || {}).parts || [];
+        return parseJson(parts.map((x) => x.text || '').join(''));
+      } };
+    }
+    if (url) {
+      return { json: async (prompt) => {
+        const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
+        if (!r.ok) throw new Error('ai ' + r.status);
+        return await r.json();
+      } };
+    }
+    return null;
+  } };
+}
+const LOGO = 'logo.png';
+const MAX_GPA = 4;
+const newCgpa = (cgpa, H, h, gpa) => (cgpa * H + gpa * h) / (H + h);
+const maxPossible = (cgpa, H, h) => newCgpa(cgpa, H, h, MAX_GPA);
+const requiredGpa = (cgpa, H, h, target) => (target * (H + h) - cgpa * H) / h;
+const isPossible = (cgpa, H, h, target) => requiredGpa(cgpa, H, h, target) <= MAX_GPA;
+function semestersNeeded(cgpa, H, h, target, g = MAX_GPA, cap = 12) {
+  for (let n = 1; n <= cap; n++) if ((cgpa * H + g * h * n) / (H + h * n) >= target) return n;
+  return null;
+}
+
+const KEY = 'unitrack:v1';
+const defaults = {
+  goal: 'cs', semester: 4, cgpa: 2.2, prevHours: 51, curHours: 17,
+  goals: { cs: 3.1, stats: 2.8 },
+  courses: [],
+  tasks: [],
+};
+const load = () => { try { return { ...defaults, ...JSON.parse(localStorage.getItem(KEY)) }; } catch { return { ...defaults }; } };
+const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
+
+const f2 = (n) => n.toFixed(2);
+const ph = (t, s) => () => `<h1>${t}</h1><p class="sub">${s}</p><div class="card empty">هذه الصفحة ضمن المرحلة 2 — قريبًا</div>`;
+const routes = [
+  { id: 'dashboard', ar: 'الرئيسية', en: 'Dashboard', icon: '🏠', render: (s) => {
+    const target = s.goals[s.goal], name = s.goal === 'cs' ? 'Computer Science' : 'Statistics';
+    const ok = isPossible(s.cgpa, s.prevHours, s.curHours, target), t = s.tasks[0];
+    return `<h1>👋 مرحبًا بك</h1><p class="sub">ركّز على مهمة اليوم، وأنت أقرب لهدفك.</p>
+    <div class="card hero row"><div><div class="muted">هدفك الأكاديمي</div><h2>${name}</h2>
+      <div class="muted">الهدف: CGPA ≥ ${f2(target)}</div>
+      <p class="muted" style="margin-top:8px">أقصى معدل ممكن هذا الترم: ${f2(maxPossible(s.cgpa, s.prevHours, s.curHours))} — ${ok ? 'الهدف ممكن' : `الهدف يحتاج ${semestersNeeded(s.cgpa, s.prevHours, s.curHours, target)} فصول تقريبًا`}</p></div>
+      <div class="ring" style="--p:${(s.cgpa / 4) * 100}"><div><span>${f2(s.cgpa)}<small>CGPA</small></span></div></div></div>
+    <div class="card row"><div><div class="muted">مهمة اليوم</div><h3>${t.title}</h3><span class="muted">${t.mins} دقيقة • ${t.note}</span></div><a class="btn" href="#/focus">ابدأ</a></div>
+    <div class="grid">${[['focus','التركيز'],['plan','الخطة'],['exams','الامتحانات'],['courses','المواد']].map(([h, l]) => `<a class="tile" href="#/${h}">${l}</a>`).join('')}</div>`; } },
+  { id: 'plan', ar: 'خطة المذاكرة', en: 'Study Plan', icon: '🗓', render: ph('خطة المذاكرة', 'خطة اليوم المرنة') },
+  { id: 'courses', ar: 'المواد', en: 'Courses', icon: '📚', render: ph('المواد', 'إدارة المواد والمحاضرات') },
+  { id: 'exams', ar: 'الامتحانات', en: 'Exams', icon: '📝', render: ph('الامتحانات', 'القادمة والسابقة') },
+  { id: 'grades', ar: 'الدرجات', en: 'Grades', icon: '🎯', render: ph('الدرجات', 'درجات المواد') },
+  { id: 'cgpa', ar: 'CGPA & Goals', en: 'CGPA', icon: '📈', render: ph('خطة المعدل', 'الوضع • المحاكاة • خطة الوصول') },
+  { id: 'focus', ar: 'التركيز', en: 'Focus', icon: '⏱', render: ph('جلسة التركيز', 'بومودورو وتقليل التشتت') },
+  { id: 'grad', ar: 'مخطط التخرج', en: 'Graduation', icon: '🎓', render: ph('مخطط التخرج', 'خطتك حتى التخرج') },
+  { id: 'tasks', ar: 'التسليمات', en: 'Assignments', icon: '📌', render: ph('التسليمات', 'تكليفات ومواعيد التسليم') },
+  { id: 'analytics', ar: 'الإحصائيات', en: 'Analytics', icon: '📊', render: ph('الإحصائيات', 'متابعة التقدم') },
+  { id: 'settings', ar: 'الإعدادات', en: 'Settings', icon: '⚙️', render: ph('الإعدادات', 'الملف الشخصي والمظهر واللغة') },
+];
+
+const state = load(), app = document.getElementById('app');
+document.documentElement.classList.toggle('light', !!state.light);
+function goalScreen(sel) {
+  const laptop = '<svg width="46" height="36" viewBox="0 0 46 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="7" y="3" width="32" height="22" rx="3"/><path d="M2 31h42"/></svg>';
+  const bars = '<svg width="46" height="36" viewBox="0 0 46 36" fill="currentColor"><rect x="6" y="20" width="8" height="14" rx="2"/><rect x="19" y="12" width="8" height="22" rx="2"/><rect x="32" y="3" width="8" height="31" rx="2"/></svg>';
+  const opt = (k, icon, en, kind, n) => `<button class="opt ${sel === k ? 'sel' : ''}" data-goal="${k}">${icon}<div class="t"><b>${en}</b><div class="m">${kind}</div><div class="m"><span>(CGPA ≥ ${n})</span></div></div><div class="radio"></div></button>`;
+  return `<div class="start"><div class="wiz"><button class="back" id="back" aria-label="رجوع">←</button><div class="steps"><i class="on"></i><i></i><i></i><i></i></div>
+  <h2>ما هو هدفك الأكاديمي؟</h2><p class="lead">اختر هدفك الأساسي لمساعدتنا في بناء الخطة المناسبة</p>
+  ${opt('cs', laptop, 'Computer Science', 'هدف أساسي', '3.10')}${opt('stats', bars, 'Statistics', 'هدف بديل', '2.80')}
+  <button class="btn" id="next">متابعة <span>→</span></button></div></div>`;
+}
+function profileScreen(s) {
+  const names = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن'];
+  const opts = names.map((n, i) => `<option value="${i + 1}" ${s.semester === i + 1 ? 'selected' : ''}>الترم ${n}</option>`).join('');
+  return `<div class="start"><div class="wiz"><button class="back" id="back" aria-label="رجوع">←</button><div class="steps"><i></i><i class="on"></i><i></i><i></i></div>
+  <h2>إعداد ملفك الأكاديمي</h2><p class="lead">أدخل بياناتك الحالية</p>
+  <div class="frow"><label>الترم الحالي</label><select class="fld" id="sem">${opts}</select></div>
+  <div class="frow"><label>المعدل التراكمي الحالي <small>(CGPA)</small></label><input class="fld" id="cgpa" type="number" step="0.01" min="0" max="4" inputmode="decimal" value="${s.cgpa.toFixed(2)}"></div>
+  <div class="frow"><label>عدد الساعات السابقة</label><input class="fld" id="prev" type="number" min="0" inputmode="numeric" value="${s.prevHours}"></div>
+  <div class="frow"><label>عدد ساعات الترم الحالي</label><input class="fld" id="cur" type="number" min="1" inputmode="numeric" value="${s.curHours}"></div>
+  <button class="btn" id="next">متابعة <span>→</span></button></div></div>`;
+}
+function coursesScreen() {
+  return `<div class="start"><div class="wiz"><button class="back" id="back" aria-label="رجوع">←</button><div class="steps"><i></i><i></i><i class="on"></i><i></i></div>
+  <h2>المواد ودرجات الميدترم</h2><div style="height:14px"></div>
+  <div class="ctable"><div class="chead"><span>المادة</span><span>الساعات</span><span>درجة الميد (من 30)</span><span></span></div><div id="rows"></div></div>
+  <button class="add" id="add">إضافة مادة +</button><div style="height:18px"></div>
+  <button class="btn" id="next">متابعة <span>→</span></button></div></div>`;
+}
+function dashboardScreen(s) {
+  const name = s.goal === 'cs' ? 'Computer Science' : 'Statistics', target = s.goals[s.goal].toFixed(2);
+  const t = (s.plan || []).find((x) => !x.done) || (s.tasks && s.tasks[0]) || { title: 'لا توجد مهمة', mins: 0, note: '' };
+  const pct = Math.min(100, (s.cgpa / 4) * 100);
+  const ico = (d) => `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  const goalIco = s.goal === 'cs' ? ico('<rect x="5" y="5" width="14" height="10" rx="1.5"/><path d="M2.5 19h19"/>') : ico('<path d="M6 19v-5M12 19V9M18 19V5"/>');
+  const tiles = [['focus', 'التركيز', '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>'], ['plan', 'الخطة', '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'], ['exams', 'الامتحانات', '<rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/>'], ['courses', 'المواد', '<path d="M12 3 4 7v10l8 4 8-4V7l-8-4ZM4 7l8 4 8-4M12 11v10"/>']];
+  return `<div class="start"><div class="dash"><div class="toast" id="toast" role="status" aria-live="polite">لا توجد إشعارات جديدة</div>
+  <div class="drawer">${routes.map((r) => `<button class="dnav" data-go="${r.id}">${r.icon} ${r.ar}</button>`).join('')}</div>
+  <div class="dtop"><button class="ic" id="bell" aria-label="إشعارات">🔔</button><div class="dgreet"><h2>👋 مرحبًا بك.</h2><p>${streak() ? '🔥 ' + streak() + ' يوم مذاكرة متتالي — كمّل!' : 'ركز على مهمة اليوم، وأنت أقرب لهدفك!'}</p></div><button class="ic" id="menu" aria-label="القائمة">☰</button></div>
+  <div class="gcard" data-go="cgpa" style="cursor:pointer"><div class="l"><div class="gt">هدفك الأكاديمي</div><div class="gn">${goalIco}<span>${name}</span></div><div class="gs">الهدف: CGPA ≥ ${target}</div></div>
+   <div class="ring" style="--p:${pct}"><div><span>${s.cgpa.toFixed(2)}<small>CGPA</small></span></div></div></div>
+  ${examCard(s)}${assignCard(s)}<button class="tcard" data-go="focus"><div class="tl">مهمة اليوم</div><div class="tr"><span class="ch">›</span><div class="tx"><b>${t.title}</b><span>${t.mins} دقيقة • ${t.note}</span></div><div class="pl"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div></div></button>
+  <div class="tiles">${tiles.map(([k, l, d]) => `<button class="tile2" data-go="${k}">${ico(d)}<span>${l}</span></button>`).join('')}</div></div></div>`;
+}
+function planScreen(s, tab) {
+  const tabs = [['day', 'اليوم'], ['week', 'الأسبوع'], ['month', 'الشهر']];
+  return `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">خطة المذاكرة اليوم</h2>
+  <div class="seg">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+  <div id="plist"></div>
+  <div class="pfoot"><span>تقدم اليوم</span><div class="bar"><i id="pbar"></i></div><b id="ppct">0%</b></div></div></div>`;
+}
+const lecMins = (p) => Math.max(10, Math.ceil((p * 3) / 5) * 5);
+const fmtMin = (m) => (m >= 60 ? `${Math.floor(m / 60)} س${m % 60 ? ` ${m % 60} د` : ''}` : `${m} د`);
+async function countPages(f) {
+  const ext = f.name.split('.').pop().toLowerCase();
+  try {
+    if (ext === 'pptx' && window.JSZip) { const z = await JSZip.loadAsync(f); const n = Object.keys(z.files).filter((k) => /^ppt\/slides\/slide\d+\.xml$/.test(k)).length; if (n) return n; }
+    if (ext === 'pdf') { const s = new TextDecoder('latin1').decode(await f.arrayBuffer()); const n = (s.match(/\/Type\s*\/Page[^s]/g) || []).length; const c = Math.max(0, ...[...s.matchAll(/\/Count\s+(\d+)/g)].map((m) => +m[1])); if (n || c) return n || c; }
+    if (ext === 'txt') return Math.max(1, Math.ceil((await f.text()).length / 1800));
+  } catch (e) {}
+  return Math.max(1, Math.round(f.size / 60000));
+}
+function courseShell(name, tab, body) {
+  const tabs = [['lec', 'المحاضرات'], ['ai', 'التحليل الذكي'], ['sum', 'المراجعة'], ['sm', 'ملخصات']];
+  return `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ctl" dir="auto">${name}</h2>
+  <div class="seg">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>${body}</div></div>`;
+}
+async function readLecture(f) {
+  const ext = f.name.split('.').pop().toLowerCase(); let text = '', pages = 0;
+  try {
+    if (ext === 'pptx' && window.JSZip) { const z = await JSZip.loadAsync(f); const ks = Object.keys(z.files).filter((k) => /^ppt\/slides\/slide\d+\.xml$/.test(k)).sort((a, b) => a.match(/\d+/)[0] - b.match(/\d+/)[0]); pages = ks.length; for (const k of ks) { const x = await z.files[k].async('string'); text += [...x.matchAll(/<a:t>([^<]*)<\/a:t>/g)].map((m) => m[1]).join(' ') + '\n'; } }
+    else if (ext === 'docx' && window.JSZip) { const z = await JSZip.loadAsync(f); const x = await z.files['word/document.xml'].async('string'); text = [...x.matchAll(/<w:t[^>]*>([^<]*)<\/w:t>/g)].map((m) => m[1]).join(' '); pages = Math.max(1, Math.ceil(text.length / 1800)); }
+    else if (ext === 'pdf' && window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; const d = await pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise; pages = d.numPages; for (let i = 1; i <= Math.min(pages, 40) && text.length < 8000; i++) { const c = await (await d.getPage(i)).getTextContent(); text += c.items.map((t) => t.str).join(' ') + '\n'; } }
+    else if (ext === 'txt') { text = await f.text(); pages = Math.max(1, Math.ceil(text.length / 1800)); }
+  } catch (e) {}
+  if (!pages) pages = await countPages(f);
+  const clean = text.replace(/\s+/g, ' ').trim(); return { pages, digest: clean.slice(0, 3000), full: clean.slice(0, 8000) };
+}
+function remindTick() {
+  const r = state.remind; if (!r || !r.on || !r.time) return;
+  const n = new Date(), k = dayKey(n), hm = `${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`;
+  if (hm < r.time || state.remindShown === k) return;
+  state.remindShown = k; save(state);
+  const t = (state.tasks || [])[0], msg = t ? `حان وقت المذاكرة: ${t.title} (${t.mins} دقيقة)` : 'حان وقت المذاكرة';
+  const d = document.createElement('div'); d.textContent = '⏰ ' + msg;
+  d.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:99;background:#2b2160;color:#fff;border:1px solid #a78bfa;border-radius:14px;padding:12px 18px;font:15px sans-serif;box-shadow:0 8px 28px rgba(0,0,0,.5);cursor:pointer;max-width:90vw';
+  d.onclick = () => d.remove(); document.body.appendChild(d); setTimeout(() => d.remove(), 15000);
+  try { if (window.Notification && Notification.permission === 'granted') new Notification(msg); } catch (e) {}
+}
+async function quizFor(course, i, pre) {
+  const l = pre ? { name: 'مراجعة', digest: 'x' } : state.lectures[course][i], w = app.querySelector('.wiz'), e = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const close = () => { const m = document.getElementById('qz'); if (m) m.remove(); };
+  const show = (h) => { let m = document.getElementById('qz'); if (!m) { w.insertAdjacentHTML('beforeend', '<div class="modal open" id="qz"></div>'); m = document.getElementById('qz'); } m.innerHTML = `<div class="mbox" style="max-height:100%;overflow:auto">${h}</div>`; };
+  const fail = (t) => { show(`<h3>${t}</h3><div class="mrow"><button class="add" id="qx">إغلاق</button></div>`); document.getElementById('qx').onclick = close; };
+  if (!l.digest) return fail('مفيش محتوى مقروء من الملف ده، فمش هقدر أعمل منه أسئلة');
+  show('<h3>جاري تجهيز الأسئلة…</h3>');
+  let qs = pre;
+  try {
+    if (!qs) {
+    qs = localQuiz(l.full || l.digest, 5);
+    if (!qs.length) throw 0; }
+  } catch (er) { return fail('المحتوى مش كفاية لعمل أسئلة من المحاضرة دي'); }
+  let k = 0, score = 0;
+  const step = () => {
+    if (k >= qs.length) { show(`<h3>النتيجة: ${score} / ${qs.length}</h3><p class="note" style="text-align:center">${score === qs.length ? 'ممتاز!' : score * 2 >= qs.length ? 'كويس، راجع الأسئلة اللي غلطت فيها.' : 'محتاج تراجع المحاضرة دي تاني.'}</p><div class="mrow"><button class="btn" id="qx">تمام</button></div>`); document.getElementById('qx').onclick = close; return; }
+    const q = qs[k];
+    show(`<h3>سؤال ${k + 1} من ${qs.length}</h3><p dir="auto" style="text-align:right;margin-bottom:12px">${e(q.q)}</p>${q.options.map((o, j) => `<button class="opt" style="margin-bottom:8px;padding:12px" data-o="${j}"><div class="t" dir="auto">${e(o)}</div></button>`).join('')}`);
+    document.querySelectorAll('#qz [data-o]').forEach((b) => b.onclick = () => {
+      const ok = +b.dataset.o === q.answer; if (ok) score++; { state.wrong = state.wrong || []; const wi = state.wrong.findIndex((w) => w.q === q.q && w.c === course); if (ok) { if (wi >= 0) state.wrong.splice(wi, 1); } else if (wi < 0) state.wrong.push({ c: course, l: q.l || l.name, q: q.q, options: q.options, answer: q.answer, why: q.why }); if (!pre) { const sk = course + '|' + l.name, st = (state.qstat = state.qstat || {})[sk] = state.qstat[sk] || { t: 0, c: 0 }; st.t++; if (ok) st.c++; } save(state); }
+      document.querySelectorAll('#qz [data-o]').forEach((o) => { o.disabled = true; if (+o.dataset.o === q.answer) o.style.borderColor = 'var(--ok)'; else if (o === b) o.style.borderColor = 'var(--danger)'; });
+      document.querySelector('#qz .mbox').insertAdjacentHTML('beforeend', `<p class="note" dir="auto">${ok ? '✓ صح' : '✗ غلط'}${q.why ? ' — ' + e(q.why) : ''}</p><button class="btn" id="qn" style="width:100%">${k + 1 >= qs.length ? 'النتيجة' : 'التالي'}</button>`);
+      document.getElementById('qn').onclick = () => { k++; step(); };
+    });
+  };
+  step();
+}
+const courseProg = (n) => { const L = (state.lectures || {})[n] || []; return L.length ? `${L.filter((l) => (state.done || {})[n + '|' + l.name]).length}/${L.length}` : ''; };
+function examCard(s) {
+  const x = (s.exams || []).filter((e) => daysLeft(e.ts) >= 0).sort((a, b) => new Date(a.ts) - new Date(b.ts))[0];
+  if (!x) return '';
+  const n = daysLeft(x.ts), c = n <= 2 ? 'var(--danger)' : n <= 7 ? 'var(--warn)' : 'var(--ok)', rem = n === 0 ? 'اليوم' : n === 1 ? 'غدًا' : `بعد ${n} يوم`;
+  return `<button class="tcard" data-go="exams" style="border-color:${c}"><div class="tl">الامتحان القادم</div><div class="tr"><span class="ch">›</span><div class="tx"><b dir="auto">${String(x.course).replace(/</g, '&lt;')} • ${x.type}</b><span style="color:${c}">${rem} — ${fmtExam(x.ts)}</span></div></div></button>`;
+}
+const dayKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+function weekMins() { const n = new Date(), s = new Date(n.getFullYear(), n.getMonth(), n.getDate() - ((n.getDay() + 1) % 7)); return Array.from({ length: 7 }, (_, i) => Math.round(((state.log || {})[dayKey(new Date(s.getFullYear(), s.getMonth(), s.getDate() + i))] || 0) / 60)); }
+function schedule() {
+  const out = {}, today = new Date(), done = state.done || {}, L = state.lectures || {}, A = state.analysis || {};
+  today.setHours(0, 0, 0, 0);
+  const wk = (c) => c.midterm / 30 - c.credits * 0.03;
+  for (const c of [...state.courses].sort((a, b) => wk(a) - wk(b))) {
+    const ex = (state.exams || []).filter((x) => x.course === c.name && daysLeft(x.ts) >= 0).sort((a, b) => new Date(a.ts) - new Date(b.ts))[0];
+    const D = ex ? Math.max(1, daysLeft(ex.ts)) : 14, ls = L[c.name] || [], pp = ls.filter((l) => l.phase === 'post');
+    const src = A[c.name] ? A[c.name].items.filter((x) => x.action !== 'skip' && x.mins > 0).map((x) => ({ name: x.name, mins: x.mins, note: x.action === 'review' ? 'مراجعة' : 'مذاكرة' })) : (pp.length ? pp : ls).map((l) => ({ name: l.name, mins: l.mins, note: `${l.pages} صفحة` }));
+    const items = src.map((x) => ({ ...x, course: c.name, key: `${c.name}|${x.name}` })).filter((x) => !done[x.key]);
+    items.forEach((x, j) => { const d = new Date(today); d.setDate(d.getDate() + Math.floor((j * D) / items.length)); const k = dayKey(d); (out[k] = out[k] || []).push(x); });
+    if (ex && D <= 7) for (let q = 0; q < D; q++) { const d = new Date(today); d.setDate(d.getDate() + q); const k = dayKey(d); (out[k] = out[k] || []).unshift({ course: c.name, name: 'مراجعة شاملة', mins: Math.min(60, 30 + (7 - D) * 10), note: 'أيام الامتحان', key: `${c.name}|crunch#${k}` }); }
+  }
+  const da = state.doneAt = state.doneAt || {};
+  Object.keys(done).forEach((k) => {
+    if (k.includes('#')) return; if (!da[k]) da[k] = dayKey(today);
+    const i = k.indexOf('|'), cn = k.slice(0, i), ln = k.slice(i + 1); if (!state.courses.some((c) => c.name === cn)) return;
+    [1, 3, 7].forEach((n) => { let d = new Date(da[k] + 'T00:00:00'); d.setDate(d.getDate() + n); if (d < today) { if (today - d > 14 * 864e5) return; d = new Date(today); } const rk = k + '#r' + n; if (done[rk]) return; const kk = dayKey(d); (out[kk] = out[kk] || []).unshift({ course: cn, name: ln, mins: 10, note: 'مراجعة متباعدة', key: rk }); });
+  });
+  (state.assign || []).filter((a) => !a.done).forEach((a) => { const n = daysLeft(a.ts); if (n < 0) return; [2, 1].forEach((b, j) => { const key = `${a.course}|assign#${a.id}-${j}`; if (done[key]) return; const d = new Date(today); d.setDate(d.getDate() + Math.max(0, n - b)); const kk = dayKey(d); (out[kk] = out[kk] || []).unshift({ course: a.course, name: 'تسليم: ' + a.title, mins: 30, note: n === 0 ? 'التسليم اليوم' : 'تسليم بعد ' + n + ' يوم', key }); }); });
+  const cap = state.dailyCap || 180, ks = Object.keys(out).sort();
+  for (let i = 0; i < ks.length; i++) { let t = 0; const keep = []; for (const x of out[ks[i]]) { if (t + x.mins <= cap || !keep.length) { keep.push(x); t += x.mins; } else { const d = new Date(ks[i] + 'T00:00:00'); d.setDate(d.getDate() + 1); const nk = dayKey(d); (out[nk] = out[nk] || []).unshift(x); if (!ks.includes(nk)) { ks.push(nk); ks.sort(); } } } out[ks[i]] = keep; }
+  return out;
+}
+function rebuildPlan() {
+  const tk = dayKey(new Date()), items = schedule()[tk] || [];
+  state.plan = items.length ? items.slice(0, 6).map((x) => ({ title: `${x.course} - ${x.name}`, note: x.note, mins: x.mins, done: false, key: x.key })) : null;
+  state.planDay = tk;
+  if (state.plan) state.tasks = [{ title: state.plan[0].title, mins: state.plan[0].mins, note: state.plan[0].note, done: false }];
+  save(state);
+}
+async function analyze(course) {
+  const sample = await claude.use('sample'); if (!sample) throw new Error('na');
+  const L = state.lectures[course], names = L.map((l) => l.name);
+  const data = L.map((l) => ({ name: l.name, phase: l.phase || 'pre', pages: l.pages, content: l.digest || '' }));
+  const r = await sample.json(`أنت مساعد مذاكرة لطالب جامعي في مادة "${course}". رفع الطالب محاضرات المادة مقسمة إلى: pre (قبل الميدترم) و post (بعد الميدترم). الامتحان القادم يركّز على محاضرات post. حلّل العلاقة بين المحاضرات: أي محاضرات pre تُعتبر متطلبًا سابقًا لفهم محاضرات post، وأيها غير مهم الآن. لكل محاضرة حدّد action: study (مذاكرة كاملة) أو review (مراجعة جزئية لأنها متطلب سابق) أو skip (غير ضرورية الآن). وحدّد mins بالدقائق (study حوالي 3 دقائق للصفحة، review بين 10 و30، skip = 0) و why جملة عربية قصيرة تشرح السبب والعلاقة. رتّب العناصر بالترتيب المقترح للمذاكرة وضع كل المحاضرات. أعد JSON فقط بالشكل: {"summary":"جملة تلخّص الخطة","items":[{"name":"","action":"","mins":0,"why":""}]} واستخدم أسماء المحاضرات كما هي بالضبط. البيانات: ${JSON.stringify(data)}`);
+  const items = (r.items || []).filter((x) => names.includes(x.name)).map((x) => ({ name: x.name, action: ['study', 'review', 'skip'].includes(x.action) ? x.action : 'skip', mins: Math.max(0, Math.round(+x.mins || 0)), why: String(x.why || '') }));
+  if (!items.length) throw new Error('empty');
+  state.analysis = state.analysis || {}; state.analysis[course] = { summary: String(r.summary || ''), items };
+  rebuildPlan();
+}
+function aiBody(name) {
+  const L = (state.lectures || {})[name] || [], A = (state.analysis || {})[name], e = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  if (!L.some((l) => l.phase === 'post')) return '<div class="empty">ارفع محاضرات ما بعد الميدترم (ومعها محاضرات قبل الميدترم) من تبويب «المحاضرات» ليحلّل التطبيق العلاقة بينها.</div>';
+  if (!A) return `<div class="empty">${L.length} محاضرة جاهزة للتحليل</div><button class="btn" id="an">حلّل واقترح خطة المذاكرة</button>`;
+  const K = { study: ['g', '✓', 'ذاكر'], review: ['o', '↻', 'راجع'], skip: ['s', '–', 'غير ضروري الآن'] };
+  return `<div class="acard"><b>${e(A.summary)}</b></div><h3 class="ah">ماذا تذاكر؟</h3>` + A.items.map((x) => { const k = K[x.action]; return `<div class="req ${k[0]}"><span class="ri">${k[1]}</span><div class="rt"><b dir="auto">${e(x.name)}</b><span>${k[2]}${x.mins ? ` (${x.mins} دقيقة)` : ''} — ${e(x.why)}</span></div></div>`; }).join('') + `<button class="btn" id="start">ابدأ المذاكرة <span>→</span></button><button class="add" id="an" style="margin-top:8px">إعادة التحليل</button>`;
+}
+function lecBody(name) {
+  const L = (state.lectures || {})[name] || [], tot = L.reduce((a, l) => a + l.mins, 0), e = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const sec = (ph, title) => `<h3 class="ah" style="margin-top:14px">${title}</h3>` + (L.map((l, i) => [l, i]).filter(([l]) => (l.phase || 'pre') === ph).map(([l, i]) => `<div class="prow ${(state.done || {})[name + '|' + l.name] ? 'done' : ''}"><button class="rd" data-k="${e(name + '|' + l.name)}" aria-label="تمت">${(state.done || {})[name + '|' + l.name] ? '✓' : ''}</button><button class="del" data-q="${i}" aria-label="اختبار" style="font-size:16px">❓</button><div class="px"><b dir="auto">${e(l.name)}</b><span>${l.mins} دقيقة</span></div><input class="fld" style="width:64px" data-p="${i}" type="number" min="1" value="${l.pages}" aria-label="الصفحات"><button class="del" data-d="${i}" aria-label="حذف">✕</button></div>`).join('') || '<div class="empty" style="padding:12px">لا توجد محاضرات</div>') + `<label class="add" style="display:block;text-align:center;cursor:pointer">+ رفع محاضرات<input type="file" class="lecf" data-ph="${ph}" multiple accept=".pdf,.pptx,.docx,.txt" hidden></label>`;
+  return `<div class="sec"><div class="kv" style="border:0;padding:0"><span>إجمالي وقت المحاضرات</span><b style="color:var(--ok)">${tot ? fmtMin(tot) : '—'}</b></div><p class="note" style="margin:6px 0 0">ارفع محاضرات قبل الميدترم وبعده كلًّا على حدة، ثم افتح «التحليل الذكي» ليحدد العلاقة بينها وما تذاكره.</p></div>` + sec('pre', 'محاضرات قبل الميدترم') + sec('post', 'محاضرات بعد الميدترم');
+}
+function smBody(name) {
+  const L = (state.lectures || {})[name] || [], S = state.sums || {}, C = state.cards || {}, e = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  return L.length ? L.map((l, i) => { const k = name + '|' + l.name; return `<div class="sec"><b dir="auto">${e(l.name)}</b>${S[k] ? `<p class="note" dir="auto" style="margin-top:8px;white-space:pre-wrap">${e(S[k])}</p>` : ''}${(C[k] || []).map((c) => `<details class="req s" style="display:block"><summary dir="auto">${e(c.f)}</summary><p class="note" dir="auto" style="margin:6px 0 0">${e(c.b)}</p></details>`).join('')}<div class="mrow"><button class="add" data-sm="${i}">${S[k] ? 'إعادة التلخيص' : 'لخّص'}</button><button class="add" data-cd="${i}">${C[k] ? 'كروت جديدة' : 'اعمل كروت'}</button></div></div>`; }).join('') : '<div class="empty">ارفع محاضرات المادة من تبويب «المحاضرات» الأول</div>';
+}
+function courseScreen(name, tab) {
+  if (tab === 'lec') return courseShell(name, tab, lecBody(name));
+  if (tab === 'ai') return courseShell(name, tab, aiBody(name));
+  if (tab === 'sm') return courseShell(name, tab, smBody(name));
+  const W = (state.wrong || []).filter((w) => w.c === name);
+  return courseShell(name, tab, W.length ? `<div class="acard"><b>${W.length} سؤال محتاج مراجعة</b><span class="bdg">من اختباراتك</span></div><button class="btn" id="rv">اختبر نفسك فيهم</button>` : '<div class="empty">مفيش أسئلة غلط محفوظة. اعمل اختبار من تبويب المحاضرات (❓) وأي سؤال تغلط فيه هيتحفظ هنا للمراجعة.</div>');
+}
+function coursesListScreen(s) {
+  const col = (v) => (v / 30 < 0.35 ? '#f87171' : v / 30 < 0.5 ? '#fb923c' : v / 30 < 0.65 ? '#fbbf24' : '#2dd4bf');
+  return `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">المواد</h2>
+  ${s.courses.map((c) => `<button class="prow crs" data-c="${String(c.name).replace(/"/g, '&quot;')}"><div class="px"><b dir="auto">${c.name}</b><span>${c.credits} ساعات</span></div><span style="color:${col(c.midterm)}">${c.midterm}/30</span><span class="muted" style="font-size:12px">${courseProg(c.name)}</span><span class="ch">‹</span></button>`).join('')}
+  <button class="add" id="edit" style="margin-top:8px">تعديل المواد والدرجات</button></div></div>`;
+}
+const AR_DAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+const AR_MON = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+function fmtExam(ts) { const d = new Date(ts); let h = d.getHours(); const m = String(d.getMinutes()).padStart(2, '0'); const ap = h >= 12 ? 'م' : 'ص'; h = h % 12 || 12; return `${AR_DAYS[d.getDay()]} ${d.getDate()} ${AR_MON[d.getMonth()]} • ${h}:${m} ${ap}`; }
+function daysLeft(ts) { const d = new Date(ts), n = new Date(); d.setHours(0, 0, 0, 0); n.setHours(0, 0, 0, 0); return Math.round((d - n) / 864e5); }
+function examsScreen(tab) {
+  const ic = (d) => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  return `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">الامتحانات</h2>
+  <div class="seg"><button data-tab="up" class="${tab === 'up' ? 'on' : ''}">القادمة</button><button data-tab="past" class="${tab === 'past' ? 'on' : ''}">السابقة</button></div>
+  <div id="elist"></div><button class="btn addx" id="addx">إضافة امتحان +</button>
+  <div class="atiles"><button data-act="manual">${ic('<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>')}<span>إضافة يدويًا</span></button><button data-act="pdf">${ic('<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/>')}<span>رفع ملف PDF</span></button><button data-act="img">${ic('<rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/>')}<span>رفع صورة الجدول</span></button></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div><div class="modal" id="modal"></div></div></div>`;
+}
+let simG = 3.3;
+function cgpaScreen(s, tab, open) {
+  const f2 = (n) => n.toFixed(2), H = s.prevHours, h = s.curHours;
+  const sem = (n) => (n === 1 ? 'فصل واحد' : n === 2 ? 'فصلين' : `${n} فصول`);
+  const goals = [['cs', 'حاسب', 'Computer Science'], ['stats', 'إحصاء', 'Statistics']];
+  const calc = (k) => { const t = s.goals[k]; return { t, req: requiredGpa(s.cgpa, H, h, t), best: semestersNeeded(s.cgpa, H, h, t, 4), mid: semestersNeeded(s.cgpa, H, h, t, 3.5) }; };
+  const tabs = [['now', 'الوضع'], ['fin', 'الدرجات'], ['sim', 'المحاكاة'], ['plan', 'خطة الوصول']];
+  let body = '';
+  if (tab === 'fin') { body = finBody(s); } else if (tab === 'now') {
+    const rows = goals.map(([k, ar]) => {
+      const c = calc(k); let cls = 'g', a, b;
+      if (s.cgpa >= c.t) { a = 'تم تحقيق الهدف'; b = 'معدلك الحالي يكفي'; }
+      else if (c.req <= 4) { a = 'ممكن في هذا الترم'; b = `تحتاج GPA ${f2(c.req)} هذا الترم`; }
+      else if (c.best && c.best <= 2) { a = 'ممكن'; b = `خلال ${sem(c.best)} مع خطة تحسين مناسبة`; }
+      else { cls = 'r'; a = 'غير ممكن في الترم الحالي'; b = c.best ? 'لكن ممكن خلال عدة فصول' : 'يحتاج أكثر من 12 فصلًا'; }
+      return `<div class="vr ${cls}"><div class="rv"><small>${ar}</small><b>${f2(c.t)}</b></div><div class="rt"><b>${a}</b><span>${b}</span></div></div>`;
+    }).join('');
+    body = `<button class="acc" id="acc"><span>وضعك الحالي</span><span>${open ? '⌃' : '⌄'}</span></button>
+    ${open ? `<div class="stats"><div><small>الهدف (إحصاء)</small><b>${f2(s.goals.stats)}</b></div><div><small>الهدف (حاسب)</small><b>${f2(s.goals.cs)}</b></div><div><small>CGPA الحالي</small><b style="color:var(--teal)">${f2(s.cgpa)}</b></div></div>` : ''}
+    <div class="sec"><h3 class="ah">إمكانية الوصول</h3>${rows}</div><button class="btn" id="detail">عرض خطة الوصول التفصيلية</button>`;
+  } else if (tab === 'plan') {
+    const fv = (c, v, done) => (done ? '—' : v ? sem(v) : 'أكثر من 12 فصلًا');
+    body = goals.map(([k, ar, en]) => { const c = calc(k), done = s.cgpa >= c.t;
+      return `<div class="sec"><div class="row2"><b dir="ltr">${en}</b><span>CGPA ≥ ${f2(c.t)}</span></div>
+      <div class="kv"><span>أقصى معدل ممكن هذا الترم</span><b>${f2(maxPossible(s.cgpa, H, h))}</b></div>
+      <div class="kv"><span>المعدل المطلوب هذا الترم</span><b style="color:${c.req <= 4 ? 'var(--ok)' : 'var(--danger)'}">${done ? '—' : c.req <= 4 ? f2(c.req) : f2(c.req) + ' (غير ممكن)'}</b></div>
+      <div class="kv"><span>الفصول بمعدل 4.00 لكل فصل</span><b>${fv(c, c.best, done)}</b></div>
+      <div class="kv"><span>الفصول بمعدل 3.50 لكل فصل</span><b>${fv(c, c.mid, done)}</b></div></div>`; }).join('') + `<p class="note">الحساب يفترض أن كل فصل قادم بنفس عدد ساعات الترم الحالي (${h}).</p>`;
+  } else {
+    const nc = newCgpa(s.cgpa, H, h, simG);
+    const rows = goals.map(([k, ar]) => {
+      const t = s.goals[k], d = t - nc; let cls = 'g', a, b;
+      if (d <= 0) { a = 'حققت الهدف'; b = 'بهذه الدرجة يكفي معدلك'; }
+      else if (d <= 0.3) { a = 'قريب من الهدف'; b = `ينقصك ${f2(d)} فقط`; }
+      else { cls = 'r'; a = 'لا يزال هناك فرق'; b = `ينقصك ${f2(d)}`; }
+      return `<div class="vr ${cls}"><div class="rv"><small>${ar}</small><b>${f2(t)}</b></div><div class="rt"><b>${a}</b><span>${b}</span></div></div>`;
+    }).join('');
+    body = `<p class="note" style="margin:0 0 12px">جرّب درجات مختلفة لترى تأثيرها على معدلك</p>
+    <div class="sec"><h3 class="ah">جزئ هذا الترم</h3><div class="chips">${[2.5, 3, 3.3, 3.5, 4].map((g) => `<button class="chip ${g === simG ? 'on' : ''}" data-g="${g}">${f2(g)}</button>`).join('')}</div></div>
+    <div class="sec"><h3 class="ah">النتيجة المتوقعة</h3><div class="kv"><span dir="ltr">CGPA الجديد</span><b style="font-size:26px;color:var(--ok)">≈ ${f2(nc)}</b></div></div>
+    <div class="sec"><h3 class="ah">حالتك بالنسبة للتخصصات</h3>${rows}</div>`;
+  }
+  return `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">خطة المعدل (CGPA)</h2>
+  <div class="seg">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>${body}</div></div>`;
+}
+function startScreen() {
+  return `<div class="start"><div class="start-card">
+  <img src="${LOGO}" width="104" height="104" alt="StudyPath" style="margin-top:4px">
+  <h1>StudyPath</h1><p>مخطط مذاكرتك الذكي للكلية والتخصص</p>
+  <svg class="start-art" viewBox="0 0 300 190" fill="none"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#8b6cf5" stop-opacity=".55"/><stop offset="1" stop-color="#8b6cf5" stop-opacity="0"/></radialGradient><linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd98a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></linearGradient></defs>
+  <ellipse cx="150" cy="165" rx="140" ry="22" fill="url(#g)"/><ellipse cx="150" cy="168" rx="120" ry="10" fill="#4c36a8" opacity=".6"/>
+  <path d="M70 48 40 160h120L108 62Z" fill="url(#c)"/>
+  <path d="M52 168v-60l22-62" stroke="#8a7ad6" stroke-width="4" stroke-linecap="round"/><path d="M74 46l30-8" stroke="#8a7ad6" stroke-width="4" stroke-linecap="round"/><path d="M92 28l30 14-24 14Z" fill="#b9a6ff"/><ellipse cx="108" cy="58" rx="8" ry="3" fill="#ffe3a3"/>
+  <rect x="22" y="146" width="58" height="9" rx="3" fill="#7c5cf0"/><rect x="26" y="137" width="50" height="9" rx="3" fill="#a78bfa"/><rect x="30" y="128" width="44" height="9" rx="3" fill="#5b3fd0"/>
+  <rect x="96" y="92" width="110" height="68" rx="6" fill="#2b2160" stroke="#8b6cf5" stroke-width="2"/><rect x="104" y="100" width="68" height="52" rx="3" fill="#3b2d86"/><rect x="178" y="100" width="20" height="52" rx="3" fill="#8b6cf5"/>
+  <path d="M84 160h134l-8 8H92Z" fill="#6d4fe0"/>
+  <path d="M238 168h30l-4-28h-22Z" fill="#7c5cf0"/><path d="M253 140c-22-8-28-30-24-48 18 4 28 22 24 48ZM253 140c0-26 8-44 24-54 6 20-6 42-24 54ZM253 140c-14-4-22-16-24-28 12 0 22 8 24 28Z" fill="#2dd4bf" opacity=".85"/></svg>
+  <div class="dots"><i class="on"></i><i></i><i></i></div><button class="btn" id="go">ابدأ الآن</button><button class="add" id="demo" style="margin-top:10px;align-self:center">جرّب ببيانات تجريبية</button></div></div>`;
+}
+function localQuiz(text, n) {
+  const SW = new Set('في من على إلى الى عن هذا هذه ذلك تلك التي الذي الذين أن إن كان كانت يكون تكون مع أو ثم قد كل بعد قبل عند حيث هو هي هم ما لا لم لن بين كما لكن أي يتم تم يمكن the and for that with this from are was were have has not but can will your you all any its into than then when what which also such each other using used use'.split(' '));
+  const clean = (w) => w.replace(/[^\p{L}\p{N}]/gu, ''), ok = (w) => w.length >= 4 && !/^\d+$/.test(w) && !SW.has(w.toLowerCase());
+  const sh = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const T = String(text || ''), sents = T.split(/[.!?؟؛\n•]+/).map((x) => x.trim()).filter((x) => { const k = x.split(/\s+/).length; return k >= 5 && k <= 35; });
+  if (sents.length < n) { const w = T.split(/\s+/); for (let i = 0; i + 8 <= w.length; i += 14) sents.push(w.slice(i, i + 14).join(' ')); }
+  const pool = [...new Set(T.split(/\s+/).map(clean).filter(ok))], out = [];
+  for (const sn of sh([...new Set(sents)])) {
+    if (out.length >= n) break;
+    const c = sn.split(/\s+/).map((w) => [w, clean(w)]).filter(([, k]) => ok(k)).sort((a, b) => b[1].length - a[1].length)[0]; if (!c) continue;
+    const ans = c[1], ar = (w) => /[\u0600-\u06FF]/.test(w), ne = pool.filter((w) => w.toLowerCase() !== ans.toLowerCase()), same = ne.filter((w) => ar(w) === ar(ans)), d = sh(same.length >= 3 ? same : ne).sort((a, b) => Math.abs(a.length - ans.length) - Math.abs(b.length - ans.length)).slice(0, 3);
+    if (d.length < 3) continue;
+    if (Math.random() < 0.35) { const tf = Math.random() < 0.5; out.push({ q: 'صح ولا غلط؟ ' + (tf ? sn : sn.replace(c[0], c[0].replace(ans, d[0]))), options: ['صح', 'غلط'], answer: tf ? 0 : 1, why: sn }); continue; }
+    const opts = sh([ans, ...d]);
+    out.push({ q: 'أكمل الفراغ: ' + sn.replace(c[0], c[0].replace(ans, '_____')), options: opts, answer: opts.indexOf(ans), why: sn });
+  }
+  return out;
+}
+let wl = null;
+async function keepAwake(on) { try { if (on && navigator.wakeLock) wl = await navigator.wakeLock.request('screen'); else if (wl) { await wl.release(); wl = null; } } catch (e) {} }
+const escH = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+function heat() { const lg = state.log || {}, t = new Date(); let h = ''; for (let i = 83; i >= 0; i--) { const d = new Date(t.getFullYear(), t.getMonth(), t.getDate() - i), m = Math.round((lg[dayKey(d)] || 0) / 60), a = m === 0 ? 0.08 : m < 20 ? 0.3 : m < 45 ? 0.5 : m < 90 ? 0.75 : 1; h += `<i title="${dayKey(d)}: ${m} د" style="background:rgba(124,92,240,${a})"></i>`; } return `<div class="hm" style="display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;gap:3px;direction:ltr;height:110px">${h}</div>`; }
+function courseTime() { const n = new Date(), st = new Date(n.getFullYear(), n.getMonth(), n.getDate() - ((n.getDay() + 1) % 7)), T = {}; for (let i = 0; i < 7; i++) { const c = (state.logCD || {})[dayKey(new Date(st.getFullYear(), st.getMonth(), st.getDate() + i))] || {}; for (const k in c) T[k] = (T[k] || 0) + c[k]; } const r = Object.entries(T).sort((a, b) => b[1] - a[1]), mx = r.length ? r[0][1] : 1; return r.map(([k, v]) => `<div class="kv"><span dir="auto">${escH(k)}</span><b>${fmtMin(Math.max(1, Math.round(v / 60)))}</b></div><div class="pfoot" style="padding:0;border:0;background:none;margin:0 0 6px"><div class="bar"><i style="width:${(v / mx) * 100}%"></i></div></div>`).join('') || '<div class="empty" style="padding:12px">اعمل جلسة تركيز وهتظهر هنا</div>'; }
+function weakList() { const r = Object.entries(state.qstat || {}).filter(([, v]) => v.t >= 3).map(([k, v]) => [k, v.c / v.t, v.t]).filter((x) => x[1] < 0.7).sort((a, b) => a[1] - b[1]).slice(0, 5); return r.map(([k, a, t]) => { const i = k.indexOf('|'); return `<div class="vr r"><div class="rv"><small>صح</small><b>${Math.round(a * 100)}%</b></div><div class="rt"><b dir="auto">${escH(k.slice(i + 1))}</b><span dir="auto">${escH(k.slice(0, i))} • من ${t} سؤال — راجعها تاني</span></div></div>`; }).join('') || '<div class="empty" style="padding:12px">اعمل كام اختبار (3 أسئلة على الأقل لكل محاضرة) وهتظهر نقاط ضعفك</div>'; }
+let openMk = -1, finCalc = null;
+function assignCard(s) { const x = (s.assign || []).filter((a) => !a.done && daysLeft(a.ts) >= 0).sort((a, b) => new Date(a.ts) - new Date(b.ts))[0]; if (!x) return ''; const n = daysLeft(x.ts), c = n <= 1 ? 'var(--danger)' : n <= 4 ? 'var(--warn)' : 'var(--ok)', e = (t) => String(t).replace(/</g, '&lt;'); return `<button class="tcard" data-go="tasks" style="border-color:${c}"><div class="tl">أقرب تسليم</div><div class="tr"><span class="ch">›</span><div class="tx"><b dir="auto">${e(x.title)}</b><span style="color:${c}">${e(x.course)} • ${n === 0 ? 'اليوم' : n === 1 ? 'غدًا' : 'بعد ' + n + ' يوم'}</span></div></div></button>`; }
+function histHtml(s) {
+  const H = s.history || []; if (!H.length) return '';
+  let spark = ''; if (H.length > 1) { const pts = H.map((h, i) => [10 + (i * 280) / (H.length - 1), 90 - (h.cgpa / 4) * 80]); spark = `<svg viewBox="0 0 300 100" width="100%" style="direction:ltr;margin-bottom:8px"><path d="M${pts.map((q) => q.join(',')).join(' L')}" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>${pts.map((q) => `<circle cx="${q[0]}" cy="${q[1]}" r="4" fill="#fff"/>`).join('')}</svg>`; }
+  return `<div class="sec"><h3 class="ah">سجل المعدل</h3>${spark}${H.map((h) => `<div class="kv"><span>${h.l} • ${h.h} ساعة</span><b>GPA ${f2(h.gpa)} → CGPA ${f2(h.cgpa)}</b></div>`).join('')}</div>`;
+}
+function loadDemo() {
+  const d = (n, h) => { const x = new Date(); x.setDate(x.getDate() + n); x.setHours(h, 0, 0, 0); return x.toISOString(); };
+  const T = 'Polymorphism allows objects of different classes to respond to the same method call. Inheritance lets a derived class reuse attributes and methods from a base class. Encapsulation hides internal state behind public methods and protects data integrity. Abstraction exposes only the essential features of an object to its callers. An interface defines a contract that implementing classes must fulfill.';
+  const T2 = 'A graph consists of vertices connected by edges. A tree is a connected graph without cycles. Induction proves a statement for all natural numbers by proving a base case and an inductive step. A relation is reflexive when every element is related to itself. A function is injective when different inputs always produce different outputs.';
+  const lec = (name, ph, text) => ({ name, pages: 12, mins: 40, phase: ph, digest: text, full: text });
+  Object.keys(state).forEach((k) => delete state[k]);
+  Object.assign(state, JSON.parse(JSON.stringify(defaults)), { goal: 'cs', semester: 4, cgpa: 2.2, prevHours: 51, curHours: 17,
+    courses: [{ name: 'OOP', credits: 3, midterm: 12 }, { name: 'Discrete', credits: 3, midterm: 18 }, { name: 'Arrays', credits: 3, midterm: 10 }, { name: 'HCI', credits: 2, midterm: 23 }, { name: 'Intro', credits: 2, midterm: 20 }],
+    exams: [{ id: 1, course: 'Discrete', type: 'ميدترم', ts: d(12, 10) }, { id: 2, course: 'OOP', type: 'ميدترم', ts: d(15, 10) }, { id: 3, course: 'Arrays', type: 'ميدترم', ts: d(18, 12) }],
+    lectures: { OOP: [lec('Lecture 4', 'pre', T), lec('Lecture 5', 'post', T)], Discrete: [lec('Lecture 6', 'post', T2)] },
+    assign: [{ id: 11, course: 'HCI', title: 'Prototype report', ts: d(5, 23), done: false }] });
+  try { localStorage.setItem('unitrack:started', '1'); } catch (e) {}
+  save(state); rebuildPlan();
+}
+function stamp(k, on) { state.doneAt = state.doneAt || {}; if (String(k).includes('#')) return; if (on) state.doneAt[k] = state.doneAt[k] || dayKey(new Date()); else delete state.doneAt[k]; }
+function dlFile(name, text, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+function icsText() {
+  const z = (d) => new Date(d).toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z', ev = [];
+  (state.exams || []).forEach((x) => ev.push(['امتحان ' + x.course + ' (' + x.type + ')', x.ts, new Date(new Date(x.ts).getTime() + 72e5), ['-P1D', '-PT2H']]));
+  (state.assign || []).filter((a) => !a.done).forEach((a) => ev.push(['تسليم ' + a.course + ': ' + a.title, a.ts, new Date(new Date(a.ts).getTime() + 36e5), ['-P1D', '-PT3H']]));
+  const S = schedule(); Object.keys(S).forEach((k) => { let t = new Date(k + 'T18:00:00'); S[k].forEach((x) => { ev.push(['مذاكرة: ' + x.course + ' - ' + x.name, t, new Date(t.getTime() + x.mins * 6e4), ['-PT10M']]); t = new Date(t.getTime() + (x.mins + 10) * 6e4); }); });
+  return 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//StudyPath//AR\r\n' + ev.map(([s, a, b, al], i) => `BEGIN:VEVENT\r\nUID:sp${i}-${Date.now()}@studypath\r\nDTSTAMP:${z(Date.now())}\r\nDTSTART:${z(a)}\r\nDTEND:${z(b)}\r\nSUMMARY:${s.replace(/[,;\\]/g, ' ')}\r\n${(al || []).map((t) => `BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:StudyPath\r\nTRIGGER:${t}\r\nEND:VALARM\r\n`).join('')}END:VEVENT\r\n`).join('') + 'END:VCALENDAR';
+}
+function beep() { try { const a = new (window.AudioContext || window.webkitAudioContext)(), o = a.createOscillator(), g = a.createGain(); o.connect(g); g.connect(a.destination); o.frequency.value = 880; g.gain.value = 0.15; o.start(); o.stop(a.currentTime + 0.35); } catch (e) {} try { navigator.vibrate && navigator.vibrate(200); } catch (e) {} }
+function sessionDone(t) { beep(); keepAwake(false); const x = (state.plan || []).find((p) => p.title === t.title); if (x) { x.done = true; if (x.key) { state.done = state.done || {}; state.done[x.key] = 1; stamp(x.key, 1); } } save(state); try { if (window.Notification && Notification.permission === 'granted') new Notification('أحسنت! خلصت: ' + t.title); } catch (e) {} }
+function streak() { let n = 0; const d = new Date(), lg = state.log || {}; if (!(lg[dayKey(d)] > 0)) d.setDate(d.getDate() - 1); while ((lg[dayKey(d)] || 0) > 0) { n++; d.setDate(d.getDate() - 1); } return n; }
+const GP = { A: 4, 'A-': 3.7, 'B+': 3.3, B: 3, 'B-': 2.7, 'C+': 2.3, C: 2, D: 1, F: 0 }, TH = [['A', 90], ['B+', 80], ['B', 75], ['C', 65]];
+function finBody(s) {
+  const G = s.gp && Object.keys(s.gp).length ? s.gp : GP, fm = s.finMax || 50, wm = Math.max(0, 100 - 30 - fm), sim = s.sim = s.sim || {}, e = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  let pts = 0, cr = 0;
+  const rows = s.courses.map((c, i) => {
+    const mk = (s.marks || {})[c.name] || [], mS = mk.reduce((a, m) => a + m.g, 0), mM = mk.reduce((a, m) => a + m.m, 0), w = mk.length && mM ? Math.round((mS / mM) * wm * 10) / 10 : (c.work === undefined ? Math.round(wm * 0.7) : c.work), base = c.midterm + w, g = sim[c.name] || 'B+'; pts += (G[g] ?? 0) * c.credits; cr += c.credits;
+    const need = TH.map(([l, t]) => { const n = t - base; return `<div class="kv"><span>للحصول على ${l} (${t}+)</span><b style="color:${n <= 0 ? 'var(--ok)' : n > fm ? 'var(--danger)' : 'var(--warn)'}">${n <= 0 ? 'مضمون' : n > fm ? 'غير ممكن' : n + ' / ' + fm}</b></div>`; }).join('');
+    return `<div class="sec"><div class="row2"><b dir="auto">${e(c.name)}</b><span>ميد ${c.midterm}/30</span></div><div class="frow"><label>أعمال السنة<small>من ${wm}</small></label><input class="fld" style="width:80px" data-wk="${i}" type="number" min="0" max="${wm}" value="${w}" ${mk.length ? 'readonly' : ''}></div><details class="req s" style="display:block" ${openMk === i ? 'open' : ''}><summary>درجاتي المسجلة (${mk.length})</summary>${mk.map((m, j) => `<div class="kv"><span dir="auto">${e(m.n)}</span><b>${m.g}/${m.m} <button class="del" data-md="${i}:${j}" aria-label="حذف">✕</button></b></div>`).join('')}<div class="frow" style="margin:8px 0 0;gap:6px"><input class="fld" style="width:100px" id="mn${i}" placeholder="كويز 1"><input class="fld" style="width:56px" id="mg${i}" type="number" placeholder="جبت"><input class="fld" style="width:56px" id="mm${i}" type="number" placeholder="من"><button class="add" data-ma="${i}">+</button></div>${mk.length ? '<p class="note" style="margin:6px 0 0">أعمال السنة محسوبة من نسبتك في الدرجات المسجلة.</p>' : ''}</details>${need}<div class="frow" style="margin:10px 0 0"><label>تقديرك المتوقع</label><select class="fld" style="width:90px" data-gr="${e(c.name)}">${Object.keys(G).map((k) => `<option ${k === g ? 'selected' : ''}>${k}</option>`).join('')}</select></div></div>`;
+  }).join('') || '<div class="empty">أضف موادك من صفحة «المواد» أولًا</div>';
+  const term = cr ? pts / cr : 0, nc = cr ? newCgpa(s.cgpa, s.prevHours, cr, term) : s.cgpa; finCalc = { term, nc, cr };
+  return `<div class="sec"><div class="frow" style="margin:0"><label>درجة الفاينل من<small>الميد من 30، والباقي أعمال سنة (بنفترض 70% منها)</small></label><input class="fld" style="width:80px" id="fm" type="number" min="10" max="70" value="${fm}"></div></div>${rows}
+  <div class="sec"><h3 class="ah">النتيجة المتوقعة</h3><div class="kv"><span>GPA الترم</span><b>${f2(term)}</b></div><div class="kv"><span dir="ltr">CGPA الجديد</span><b style="color:var(--ok)">≈ ${f2(nc)}</b></div><div class="kv"><span>هدف حاسب (${f2(s.goals.cs)})</span><b>${nc >= s.goals.cs ? '✓' : 'ينقصك ' + f2(s.goals.cs - nc)}</b></div><div class="kv"><span>هدف إحصاء (${f2(s.goals.stats)})</span><b>${nc >= s.goals.stats ? '✓' : 'ينقصك ' + f2(s.goals.stats - nc)}</b></div></div><div class="mrow"><button class="add" id="hs">سجّل نتيجة الترم</button><button class="add" id="hn">ابدأ ترم جديد</button></div>${histHtml(s)}<p class="note">جدول النقاط (GP) قابل للتعديل من الإعدادات.</p>`;
+}
+let cur = null, curCourse = 'OOP', backTo = 'dashboard';
+function go(id) { clearInterval(window.__ft); keepAwake(false); document.title = 'StudyPath'; if (state.log) save(state); cur = id; if (location.hash !== '#/' + id) { try { history.pushState(null, '', '#/' + id); } catch (e) {} } render(); window.scrollTo(0, 0); }
+function render() {
+  const started = (() => { try { return localStorage.getItem('unitrack:started'); } catch { return null; } })();
+  const id = cur || location.hash.replace('#/', '') || (started ? 'dashboard' : 'start');
+  if (id === 'start') {
+    app.innerHTML = startScreen();
+    document.getElementById('demo').onclick = () => { loadDemo(); go('dashboard'); };
+    document.getElementById('go').onclick = () => {
+      app.innerHTML = '<div class="start"><div class="start-card"><div class="loader"><div class="spin"></div>جاري التحميل...</div></div></div>';
+      setTimeout(() => { go('goal'); }, 900);
+    };
+    return;
+  }
+  if (id === 'goal') {
+    app.innerHTML = goalScreen(state.goal);
+    app.querySelectorAll('[data-goal]').forEach((b) => b.onclick = () => {
+      state.goal = b.dataset.goal;
+      app.querySelectorAll('[data-goal]').forEach((o) => o.classList.toggle('sel', o === b));
+    });
+    document.getElementById('back').onclick = () => { go('start'); };
+    document.getElementById('next').onclick = () => { save(state); go('profile'); };
+    return;
+  }
+  if (id === 'setup') {
+    app.innerHTML = coursesScreen();
+    const body = document.getElementById('rows');
+    const col = (v) => (v / 30 < 0.35 ? '#f87171' : v / 30 < 0.5 ? '#fb923c' : v / 30 < 0.65 ? '#fbbf24' : '#2dd4bf');
+    const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const draw = () => {
+      body.innerHTML = state.courses.map((c, i) => `<div class="crow" data-i="${i}"><input class="ci nm" data-k="name" placeholder="اسم المادة" value="${esc(c.name)}"><input class="ci hrs" data-k="credits" type="number" min="1" inputmode="numeric" value="${c.credits}"><input class="ci mid" data-k="midterm" type="number" min="0" max="30" step="0.5" inputmode="decimal" style="color:${col(c.midterm)}" value="${c.midterm}"><button class="del" data-del="${i}" aria-label="حذف">🗑</button></div>`).join('') || '<div class="empty">لا توجد مواد بعد — أضف مادة</div>';
+    };
+    draw();
+    body.addEventListener('input', (e) => {
+      const k = e.target.dataset.k; if (!k) return;
+      const c = state.courses[+e.target.closest('.crow').dataset.i];
+      c[k] = k === 'name' ? e.target.value : parseFloat(e.target.value);
+      e.target.classList.remove('err');
+      if (k === 'midterm') e.target.style.color = col(c.midterm);
+    });
+    body.addEventListener('click', (e) => { const d = e.target.closest('[data-del]'); if (d) { state.courses.splice(+d.dataset.del, 1); draw(); } });
+    document.getElementById('add').onclick = () => { state.courses.push({ name: '', credits: 3, midterm: 0 }); draw(); const n = body.querySelectorAll('.nm'); n[n.length - 1].focus(); };
+    document.getElementById('back').onclick = () => { go('profile'); };
+    document.getElementById('next').onclick = () => {
+      let ok = state.courses.length > 0;
+      body.querySelectorAll('.crow').forEach((row) => {
+        const c = state.courses[+row.dataset.i];
+        const bad = { name: !String(c.name).trim(), credits: !(c.credits > 0), midterm: !(c.midterm >= 0 && c.midterm <= 30) };
+        Object.keys(bad).forEach((k) => { row.querySelector(`[data-k="${k}"]`).classList.toggle('err', bad[k]); if (bad[k]) ok = false; });
+      });
+      if (!ok) return;
+      save(state); try { localStorage.setItem('unitrack:started', '1'); } catch {} go('dashboard');
+    };
+    return;
+  }
+  if (id === 'profile') {
+    app.innerHTML = profileScreen(state);
+    document.getElementById('back').onclick = () => { go('goal'); };
+    document.getElementById('next').onclick = () => {
+      const g = (k) => document.getElementById(k);
+      const cg = parseFloat(g('cgpa').value), ph = parseInt(g('prev').value, 10), ch = parseInt(g('cur').value, 10);
+      const bad = { cgpa: !(cg >= 0 && cg <= 4), prev: !(ph >= 0), cur: !(ch > 0) };
+      Object.keys(bad).forEach((k) => g(k).classList.toggle('err', bad[k]));
+      if (Object.values(bad).some(Boolean)) return;
+      Object.assign(state, { semester: +g('sem').value, cgpa: cg, prevHours: ph, curHours: ch });
+      save(state); go('setup');
+    };
+    return;
+  }
+  if (id === 'courses') {
+    app.innerHTML = coursesListScreen(state);
+    app.querySelectorAll('[data-c]').forEach((b) => b.onclick = () => { curCourse = b.dataset.c; backTo = 'courses'; go('course'); });
+    document.getElementById('back').onclick = () => go('dashboard');
+    document.getElementById('edit').onclick = () => go('setup');
+    return;
+  }
+  if (id === 'course') {
+    let tab = 'lec';
+    const mount = () => {
+      app.innerHTML = courseScreen(curCourse, tab);
+      app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { tab = b.dataset.tab; mount(); });
+      document.getElementById('back').onclick = () => go(backTo);
+      const st = document.getElementById('start'); if (st) st.onclick = () => go('focus');
+      const rv = document.getElementById('rv'); if (rv) rv.onclick = () => quizFor(curCourse, 0, (state.wrong || []).filter((w) => w.c === curCourse).slice(0, 10));
+      const gen = (b, kind) => { b.onclick = async () => { const l = state.lectures[curCourse][+b.dataset[kind]]; if (!l.digest) { b.textContent = 'مفيش محتوى مقروء'; return; } b.disabled = true; b.textContent = 'جاري…'; try { const sample = await claude.use('sample'); if (!sample) throw 0; const k = curCourse + '|' + l.name; if (kind === 'sm') { const r = await sample.json(`لخّص هذه المحاضرة بالعربية في 5 نقاط قصيرة كحد أقصى، كل نقطة في سطر. أعد JSON فقط: {"s":""}. العنوان: ${l.name}. المحتوى: ${l.digest}`); (state.sums = state.sums || {})[k] = String(r.s || ''); } else { const r = await sample.json(`اعمل 6 بطاقات مراجعة (سؤال وجواب قصير) بالعربية من هذه المحاضرة. أعد JSON فقط: {"cards":[{"f":"","b":""}]}. العنوان: ${l.name}. المحتوى: ${l.digest}`); (state.cards = state.cards || {})[k] = (r.cards || []).filter((c) => c && c.f && c.b).slice(0, 6); } save(state); mount(); } catch (er) { b.disabled = false; b.textContent = 'تعذّر، جرّب تاني'; } }; };
+      app.querySelectorAll('[data-sm]').forEach((b) => gen(b, 'sm')); app.querySelectorAll('[data-cd]').forEach((b) => gen(b, 'cd'));
+      const an = document.getElementById('an'); if (an) an.onclick = async () => { an.disabled = true; an.textContent = 'جاري التحليل…'; try { await analyze(curCourse); mount(); } catch (err) { an.disabled = false; an.textContent = 'تعذّر التحليل — اضغط لإعادة المحاولة'; } };
+      if (tab === 'lec') {
+        const Ls = (state.lectures = state.lectures || {}); Ls[curCourse] = Ls[curCourse] || [];
+        const upd = () => { if (state.analysis) delete state.analysis[curCourse]; rebuildPlan(); mount(); };
+        app.querySelectorAll('.lecf').forEach((inp) => inp.onchange = async () => { inp.parentElement.childNodes[0].textContent = 'جاري قراءة الملفات…'; for (const f of inp.files) { const r = await readLecture(f); Ls[curCourse].push({ name: f.name.replace(/\.[^.]+$/, ''), pages: r.pages, mins: lecMins(r.pages), phase: inp.dataset.ph, digest: r.digest, full: r.full }); } upd(); });
+        app.querySelectorAll('[data-p]').forEach((i) => i.onchange = () => { const l = Ls[curCourse][+i.dataset.p]; l.pages = Math.max(1, parseInt(i.value, 10) || 1); l.mins = lecMins(l.pages); upd(); });
+        app.querySelectorAll('[data-d]').forEach((b) => b.onclick = () => { Ls[curCourse].splice(+b.dataset.d, 1); upd(); });
+        app.querySelectorAll('[data-q]').forEach((b) => b.onclick = () => quizFor(curCourse, +b.dataset.q));
+        app.querySelectorAll('[data-k]').forEach((b) => b.onclick = () => { const k = b.dataset.k; state.done = state.done || {}; if (state.done[k]) { delete state.done[k]; stamp(k, 0); } else { state.done[k] = 1; stamp(k, 1); } rebuildPlan(); mount(); });
+      }
+    };
+    mount();
+    return;
+  }
+  if (id === 'cgpa') {
+    let tab = 'now', open = true;
+    const mount = () => {
+      app.innerHTML = cgpaScreen(state, tab, open);
+      app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { tab = b.dataset.tab; mount(); });
+      const acc = document.getElementById('acc'); if (acc) acc.onclick = () => { open = !open; mount(); };
+      app.querySelectorAll('[data-g]').forEach((b) => b.onclick = () => { simG = +b.dataset.g; mount(); });
+      app.querySelectorAll('[data-gr]').forEach((b) => b.onchange = () => { state.sim[b.dataset.gr] = b.value; save(state); mount(); });
+      app.querySelectorAll('[data-wk]').forEach((b) => b.onchange = () => { state.courses[+b.dataset.wk].work = Math.max(0, parseFloat(b.value) || 0); save(state); mount(); });
+      const fmI = document.getElementById('fm'); if (fmI) fmI.onchange = () => { state.finMax = Math.min(70, Math.max(10, parseInt(fmI.value, 10) || 50)); save(state); mount(); };
+      app.querySelectorAll('[data-ma]').forEach((b) => b.onclick = () => { const i = +b.dataset.ma, g = (k) => document.getElementById(k + i), gv = parseFloat(g('mg').value), mv = parseFloat(g('mm').value); if (!(gv >= 0) || !(mv > 0)) { g('mm').classList.add('err'); return; } const nm = state.courses[i].name; (state.marks = state.marks || {})[nm] = (state.marks[nm] || []).concat({ n: g('mn').value.trim() || 'درجة', g: gv, m: mv }); openMk = i; save(state); mount(); });
+      app.querySelectorAll('[data-md]').forEach((b) => b.onclick = () => { const [i, j] = b.dataset.md.split(':').map(Number); state.marks[state.courses[i].name].splice(j, 1); openMk = i; save(state); mount(); });
+      const rec = () => { if (!finCalc || !finCalc.cr) return false; state.history = (state.history || []).filter((h) => h.l !== 'الترم ' + state.semester).concat({ l: 'الترم ' + state.semester, gpa: finCalc.term, cgpa: finCalc.nc, h: finCalc.cr }); return true; };
+      const hs = document.getElementById('hs'); if (hs) hs.onclick = () => { if (rec()) { save(state); mount(); } };
+      const hn = document.getElementById('hn'); if (hn) hn.onclick = () => { if (!finCalc || !finCalc.cr || !confirm('هيتم اعتماد المعدل المتوقع وبدء ترم جديد، وهتتمسح مواد الترم الحالي ومحاضراته. تكمل؟')) return; rec(); Object.assign(state, { cgpa: finCalc.nc, prevHours: state.prevHours + finCalc.cr, semester: state.semester + 1, courses: [], sim: {}, marks: {}, lectures: {}, analysis: {}, done: {}, doneAt: {}, exams: [], plan: null, tasks: [], wrong: [] }); save(state); tab = 'now'; mount(); };
+      const dt = document.getElementById('detail'); if (dt) dt.onclick = () => { tab = 'plan'; mount(); };
+      document.getElementById('back').onclick = () => go('dashboard');
+    };
+    mount();
+    return;
+  }
+  if (id === 'exams') {
+    state.exams = state.exams || [];
+    let tab = 'up';
+    app.innerHTML = examsScreen(tab);
+    const list = document.getElementById('elist'), mb = document.getElementById('modal'), p2 = (n) => String(n).padStart(2, '0');
+    const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const toast = (m) => { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); };
+    const draw = () => {
+      const items = state.exams.filter((x) => (tab === 'up') === (daysLeft(x.ts) >= 0)).sort((a, b) => (tab === 'up' ? 1 : -1) * (new Date(a.ts) - new Date(b.ts)));
+      list.innerHTML = items.map((x) => { const n = daysLeft(x.ts); const rem = n < 0 ? `مضى منذ ${-n} يوم` : n === 0 ? 'اليوم' : n === 1 ? 'غدًا' : `${n} يوم متبقٍ`; const c = n < 0 ? 'var(--muted)' : n <= 2 ? 'var(--danger)' : n <= 7 ? 'var(--warn)' : 'var(--ok)';
+        return `<button class="ecard" data-e="${x.id}"><div class="et"><b dir="auto">${esc(x.course)}${x.type !== 'ميدترم' ? ` <small>• ${esc(x.type)}</small>` : ''}</b><span class="ed">${fmtExam(x.ts)}</span><span class="er" style="color:${c}">(${rem})</span></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button>`; }).join('') || `<div class="empty">${tab === 'up' ? 'لا توجد امتحانات قادمة' : 'لا توجد امتحانات سابقة'}</div>`;
+    };
+    const close = () => mb.classList.remove('open');
+    const openModal = (ex) => {
+      const d = ex ? new Date(ex.ts) : new Date(Date.now() + 7 * 864e5);
+      const dv = `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`, tv = ex ? `${p2(d.getHours())}:${p2(d.getMinutes())}` : '10:00';
+      const names = state.courses.map((c) => c.name); if (ex && !names.includes(ex.course)) names.push(ex.course);
+      const types = ['ميدترم', 'فاينل', 'كويز', 'عملي'];
+      mb.innerHTML = `<div class="mbox"><h3>${ex ? 'تعديل الامتحان' : 'إضافة امتحان'}</h3>
+        <div class="frow"><label>المادة</label><select class="fld" id="mc">${names.map((n) => `<option ${ex && ex.course === n ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
+        <div class="frow"><label>النوع</label><select class="fld" id="mt">${types.map((n) => `<option ${ex && ex.type === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+        <div class="frow"><label>التاريخ</label><input class="fld" id="md" type="date" value="${dv}"></div>
+        <div class="frow"><label>الوقت</label><input class="fld" id="mh" type="time" value="${tv}"></div>
+        <div class="mrow"><button class="btn" id="ms">حفظ</button><button class="add" id="mx">إلغاء</button>${ex ? '<button class="add dng" id="mdl">حذف</button>' : ''}</div></div>`;
+      mb.classList.add('open');
+      document.getElementById('mx').onclick = close;
+      if (ex) document.getElementById('mdl').onclick = () => { state.exams = state.exams.filter((x) => x.id !== ex.id); state.planDay = null; save(state); close(); draw(); };
+      document.getElementById('ms').onclick = () => {
+        const dd = document.getElementById('md'), tt = document.getElementById('mh');
+        if (!dd.value || !tt.value || !state.courses.length) { dd.classList.toggle('err', !dd.value); tt.classList.toggle('err', !tt.value); if (!state.courses.length) toast('أضف مادة أولًا'); return; }
+        const rec = { id: ex ? ex.id : Date.now(), course: document.getElementById('mc').value, type: document.getElementById('mt').value, ts: new Date(`${dd.value}T${tt.value}`).toISOString() };
+        state.exams = ex ? state.exams.map((x) => (x.id === ex.id ? rec : x)) : [...state.exams, rec];
+        state.planDay = null; save(state); close(); tab = daysLeft(rec.ts) >= 0 ? 'up' : 'past';
+        app.querySelectorAll('[data-tab]').forEach((o) => o.classList.toggle('on', o.dataset.tab === tab)); draw();
+      };
+    };
+    draw();
+    list.addEventListener('click', (e) => { const b = e.target.closest('[data-e]'); if (b) openModal(state.exams.find((x) => String(x.id) === b.dataset.e)); });
+    app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { tab = b.dataset.tab; app.querySelectorAll('[data-tab]').forEach((o) => o.classList.toggle('on', o === b)); draw(); });
+    document.getElementById('addx').onclick = () => openModal(null);
+    const fin = document.createElement('button'); fin.className = 'add'; fin.style.margin = '8px 0'; fin.textContent = '📅 مواعيد النهائي لكل المواد';
+    document.getElementById('addx').insertAdjacentElement('afterend', fin);
+    fin.onclick = () => {
+      const cur = (c) => state.exams.find((x) => x.course === c && x.type === 'فاينل');
+      const dv = (ts) => { const d = new Date(ts); return `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`; };
+      mb.innerHTML = `<div class="mbox"><h3>مواعيد امتحانات النهائي</h3>${state.courses.map((c, i) => { const x = cur(c.name); return `<div class="frow"><label dir="auto">${esc(c.name)}</label><input class="fld" data-fc="${i}" type="date" value="${x ? dv(x.ts) : ''}"></div>`; }).join('') || '<div class="empty">أضف مواد أولًا</div>'}
+        <div class="mrow"><button class="btn" id="fs">حفظ</button><button class="add" id="fx">إلغاء</button></div></div>`;
+      mb.classList.add('open');
+      document.getElementById('fx').onclick = close;
+      document.getElementById('fs').onclick = () => {
+        mb.querySelectorAll('[data-fc]').forEach((inp) => {
+          if (!inp.value) return;
+          const c = state.courses[+inp.dataset.fc], x = cur(c.name), t = x ? `${p2(new Date(x.ts).getHours())}:${p2(new Date(x.ts).getMinutes())}` : '10:00';
+          const rec = { id: x ? x.id : Date.now() + +inp.dataset.fc, course: c.name, type: 'فاينل', ts: new Date(`${inp.value}T${t}`).toISOString() };
+          state.exams = x ? state.exams.map((e) => (e.id === x.id ? rec : e)) : [...state.exams, rec];
+        });
+        state.planDay = null; save(state); close(); tab = 'up'; app.querySelectorAll('[data-tab]').forEach((o) => o.classList.toggle('on', o.dataset.tab === tab)); draw();
+      };
+    };
+    app.querySelectorAll('[data-act]').forEach((b) => b.onclick = () => {
+      if (b.dataset.act === 'manual') return openModal(null);
+      if (b.dataset.act === 'img') return toast('الصور مش مدعومة. ارفع الجدول PDF أو Word أو أضفه يدويًا');
+      const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.pdf,.docx,.txt';
+      inp.onchange = async () => { const f = inp.files[0]; if (!f) return; toast('جاري قراءة الجدول…');
+        try { const r = await readLecture(f), sample = await claude.use('sample'); if (!sample) throw 0; const names = state.courses.map((c) => String(c.name));
+          const o = await sample.json(`استخرج مواعيد الامتحانات من نص الجدول التالي. المواد عند الطالب: ${JSON.stringify(names)}. أعد JSON فقط: {"exams":[{"course":"","type":"ميدترم","date":"YYYY-MM-DD","time":"HH:MM"}]} واختر اسم المادة من القائمة إن تطابقت. النص: ${r.full}`);
+          let n = 0; (o.exams || []).forEach((x, i) => { const d = new Date(`${x.date}T${x.time || '10:00'}`); if (!x.course || isNaN(d)) return; const lc = (v) => String(v).toLowerCase(), m = names.find((c) => lc(x.course).includes(lc(c)) || lc(c).includes(lc(x.course))); state.exams.push({ id: Date.now() + i, course: m || x.course, type: ['ميدترم', 'فاينل', 'كويز'].includes(x.type) ? x.type : 'ميدترم', ts: d.toISOString() }); n++; });
+          save(state); draw(); toast(n ? `تمت إضافة ${n} امتحان` : 'ماقدرتش ألاقي مواعيد في الملف'); } catch (er) { toast('تعذّرت القراءة، أضف الامتحان يدويًا'); } };
+      inp.click(); });
+    document.getElementById('back').onclick = () => go('dashboard');
+    return;
+  }
+  if (id === 'focus') {
+    const t = (state.tasks && state.tasks[0] && state.tasks[0].mins) ? state.tasks[0] : { title: 'جلسة حرة', mins: 25 }, course = String(t.title).split(' - ')[0], phs = [];
+    const cf = state.focusCfg || { s: 25, b: 5 }; for (let left = t.mins; left > 0;) { const m = Math.min(cf.s, left); phs.push({ k: 'study', m }); left -= m; if (left > 0) phs.push({ k: 'break', m: phs.filter((x) => x.k === 'study').length % 4 === 0 ? cf.b * 3 : cf.b }); }
+    let i = 0, rem = phs[0].m * 60, run = false, fin = false;
+    const p2 = (n) => String(n).padStart(2, '0'), nm = (k) => (k === 'study' ? 'مذاكرة' : 'راحة');
+    app.innerHTML = `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">جلسة مذاكرة</h2><div id="fbody"></div></div></div>`;
+    const fb = document.getElementById('fbody');
+    const paint = () => {
+      document.title = run && !fin ? p2(Math.floor(rem / 60)) + ':' + p2(rem % 60) + ' • StudyPath' : 'StudyPath'; const tot = phs[i].m * 60, pct = fin ? 100 : ((tot - rem) / tot) * 100;
+      fb.innerHTML = `<div class="fring" style="--p:${pct}"><div><b>${p2(Math.floor(rem / 60))}:${p2(rem % 60)}</b><small dir="auto">${fin ? 'أحسنت! انتهت الجلسة' : `${course} - ${nm(phs[i].k)}`}</small></div></div>
+      <div class="fctl"><button class="fb" id="frs" aria-label="إعادة">↺</button><button class="fb main" id="fpl" aria-label="تشغيل">${run ? '⏸' : '▶'}</button><button class="fb" id="fsk" aria-label="تخطي">⏭</button></div>
+      <div class="sec"><h3 class="ah">الجلسة</h3>${phs.map((x, j) => `<div class="kv fph ${j < i || fin ? 'done' : j === i ? 'cur' : ''}"><span>${nm(x.k)}</span><b>${x.m} دقيقة</b></div>`).join('')}</div>`;
+      document.getElementById('fpl').onclick = () => { if (fin) { i = 0; fin = false; rem = phs[0].m * 60; } run = !run; keepAwake(run); paint(); };
+      document.getElementById('frs').onclick = () => { fin = false; rem = phs[i].m * 60; paint(); };
+      document.getElementById('fsk').onclick = () => next();
+      fb.insertAdjacentHTML('beforeend', '<button class="add" id="fds">🔕 تقليل التشتت</button>');
+      if (!run && i === 0 && !fin) { fb.insertAdjacentHTML('beforeend', `<div class="chips" style="margin-top:12px">${[[25, 5], [50, 10], [15, 3]].map(([a, b]) => `<button class="chip ${cf.s === a ? 'on' : ''}" data-cf="${a}-${b}">${a}/${b}</button>`).join('')}</div>`); fb.querySelectorAll('[data-cf]').forEach((x) => x.onclick = () => { const [a, b] = x.dataset.cf.split('-').map(Number); state.focusCfg = { s: a, b }; save(state); go('focus'); }); }
+      document.getElementById('fds').onclick = () => go('distract');
+    };
+    const next = () => { if (i >= phs.length - 1) { fin = true; run = false; rem = 0; sessionDone(t); } else { i++; rem = phs[i].m * 60; beep(); } paint(); };
+    let last = Date.now();
+    window.__ft = setInterval(() => { const n = Date.now(), dt = Math.min(Math.floor((n - last) / 1000), 3600); if (dt < 1) return; last += dt * 1000; if (!run) return; if (phs[i].k === 'study') { const k = dayKey(new Date()); state.log = state.log || {}; state.log[k] = (state.log[k] || 0) + dt; state.logCD = state.logCD || {}; state.logCD[k] = state.logCD[k] || {}; state.logCD[k][course] = (state.logCD[k][course] || 0) + dt; save(state); } rem -= dt; if (rem <= 0) next(); else paint(); }, 500);
+    paint();
+    document.getElementById('back').onclick = () => go('dashboard');
+    return;
+  }
+  if (id === 'distract') {
+    const d = state.dist = state.dist || { apps: { TikTok: true, Instagram: true, YouTube: false, Facebook: false }, limit: 2, from: '22:00', to: '23:00' };
+    const hrs = [1, 2, 3, 4].map((n) => `<option value="${n}" ${d.limit === n ? 'selected' : ''}>${n === 1 ? 'ساعة' : n === 2 ? 'ساعتان' : n + ' ساعات'}</option>`).join('');
+    app.innerHTML = `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">تقليل التشتت</h2>
+      <div class="sec"><h3 class="ah">حظر التطبيقات المشتتة</h3>${Object.keys(d.apps).map((k) => `<button class="opt ${d.apps[k] ? 'sel' : ''}" data-a="${k}"><div class="t"><b>${k}</b></div><span class="radio"></span></button>`).join('')}</div>
+      <div class="sec"><div class="frow"><label>الحد اليومي للتطبيقات</label><select class="fld" id="dl">${hrs}</select></div>
+      <div class="frow"><label>وقت الترفيه المسموح<small>من – إلى</small></label><div style="display:flex;gap:6px"><input class="fld" style="width:100px" id="df" type="time" value="${d.from}"><input class="fld" style="width:100px" id="dt" type="time" value="${d.to}"></div></div></div>
+      <p class="note">هذه الإعدادات تُحفظ في المعاينة فقط؛ حظر التطبيقات فعليًا يحتاج تطبيق جوال.</p></div></div>`;
+    app.querySelectorAll('[data-a]').forEach((b) => b.onclick = () => { d.apps[b.dataset.a] = !d.apps[b.dataset.a]; b.classList.toggle('sel'); save(state); });
+    document.getElementById('dl').onchange = (e) => { d.limit = +e.target.value; save(state); };
+    document.getElementById('df').onchange = (e) => { d.from = e.target.value; save(state); };
+    document.getElementById('dt').onchange = (e) => { d.to = e.target.value; save(state); };
+    document.getElementById('back').onclick = () => go('focus');
+    return;
+  }
+  if (id === 'analytics') {
+    const d = weekMins(), days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+    const sum = d.reduce((a, b) => a + b, 0), pct = Math.min(100, Math.round((sum / ((state.weekGoal || 10) * 60)) * 100)), mx = Math.max(1, ...d);
+    const pl = state.plan || state.tasks, done = pl.filter((x) => x.done).length, up = (state.exams || []).filter((x) => daysLeft(x.ts) >= 0).length;
+    const pts = d.map((v, i) => [18 + i * 44, 100 - (v / mx) * 80]);
+    let ln = `M${pts[0]}`; for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], cx = (x0 + x1) / 2; ln += ` C${cx},${y0} ${cx},${y1} ${x1},${y1}`; }
+    app.innerHTML = `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">الإحصائيات</h2>
+      <div class="stats"><div><small>مذاكرة الأسبوع</small><b>${fmtMin(sum)}</b></div><div><small>المهام المكتملة</small><b>${done} / ${pl.length}</b></div><div><small>امتحانات قادمة</small><b>${up}</b></div></div>
+      <div class="sec"><h3 class="ah">هذا الأسبوع</h3>
+      <svg viewBox="0 0 300 110" width="100%" style="direction:ltr"><defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5cf0" stop-opacity=".55"/><stop offset="1" stop-color="#7c5cf0" stop-opacity="0"/></linearGradient></defs>
+      <path d="${ln} L${pts[6][0]},105 L${pts[0][0]},105Z" fill="url(#ag)"/><path d="${ln}" fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>${pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#fff"/>`).join('')}</svg>
+      <div class="wl">${days.map((x) => `<span>${x}</span>`).join('')}</div></div>
+      <div class="sec"><div class="kv"><span>🔥 أيام متتالية</span><b>${streak()}</b></div><div class="kv"><span>تحقيق هدف الأسبوع</span><b>${pct}%</b></div><div class="frow" style="margin:8px 0 0"><label>هدف الأسبوع بالساعات</label><input class="fld" id="wg" type="number" min="1" max="80" value="${state.weekGoal || 10}"></div></div><div class="sec"><h3 class="ah">وقت كل مادة هذا الأسبوع</h3>${courseTime()}</div><div class="sec"><h3 class="ah">نقاط الضعف</h3>${weakList()}</div><div class="sec"><h3 class="ah">آخر 12 أسبوع</h3>${heat()}</div></div></div>`;
+    document.getElementById('wg').onchange = (e) => { state.weekGoal = Math.max(1, parseInt(e.target.value, 10) || 10); save(state); go('analytics'); };
+    document.getElementById('back').onclick = () => go('dashboard');
+    return;
+  }
+  if (id === 'settings') {
+    const rows = [['👤', 'الملف الشخصي', 'profile'], ['🎯', 'الأهداف والتخصص', 'goal'], ['🔔', 'الإشعارات والتذكيرات', 'remind']];
+    app.innerHTML = `<div class="start"><div class="wiz pwrap"><div class="toast" id="toast" role="status" aria-live="polite"></div><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">⚙️ الإعدادات</h2>
+      <div class="sec" style="padding:0;overflow:hidden">${rows.map(([i, l, g]) => `<button class="srow" data-s="${g}"><span>${i}</span><b>${l}</b><span class="ch">‹</span></button>`).join('')}
+      <div class="srow"><span>🎨</span><b>مظهر التطبيق</b><span>☀️</span><button class="tg ${state.light ? '' : 'on'}" id="tg" role="switch" aria-checked="${!state.light}" aria-label="الوضع الداكن"></button></div>
+      <div class="srow"><span>🌐</span><b>اللغة</b><select class="fld" style="width:120px"><option>العربية</option><option disabled>English (قريبًا)</option></select></div></div></div></div>`;
+    app.querySelectorAll('[data-s]').forEach((b) => b.onclick = () => { if (b.dataset.s === 'remind') { const r = document.getElementById('rt'); r.scrollIntoView({ block: 'center' }); r.focus(); } else if (b.dataset.s) { backTo = 'settings'; go(b.dataset.s); } else { const t = document.getElementById('toast'); t.textContent = 'هذه الميزة قريبًا'; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); } });
+    const box = app.querySelector('.sec'), msg = (m) => { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); };
+    box.insertAdjacentHTML('beforeend', '<button class="srow" id="bx"><span>💾</span><b>تصدير بياناتي</b><span class="ch">‹</span></button><label class="srow" style="cursor:pointer"><span>📥</span><b>استيراد بياناتي</b><input type="file" id="bi" accept=".json" hidden></label>');
+    const rm = state.remind || { on: false, time: '18:00' };
+    box.insertAdjacentHTML('beforeend', `<div class="srow"><span>⏰</span><b>تذكير يومي بالمذاكرة</b><input class="fld" id="rt" type="time" style="width:100px" value="${rm.time}"><button class="tg ${rm.on ? 'on' : ''}" id="rtg" role="switch" aria-checked="${!!rm.on}" aria-label="تذكير"></button></div>`);
+    const saveRm = (on) => { state.remind = { on, time: document.getElementById('rt').value || '18:00' }; state.remindShown = null; save(state); };
+    document.getElementById('rtg').onclick = (e) => { const on = !(state.remind && state.remind.on); saveRm(on); e.currentTarget.classList.toggle('on', on); e.currentTarget.setAttribute('aria-checked', String(on)); if (on) { msg('هيظهرلك تنبيه في الوقت ده طول ما التطبيق مفتوح'); try { if (window.Notification && Notification.permission === 'default') Notification.requestPermission(); } catch (er) {} } };
+    document.getElementById('rt').onchange = () => { if (state.remind) saveRm(state.remind.on); };
+    document.getElementById('bx').onclick = () => { state.lastBackup = Date.now(); save(state); dlFile('studypath-backup.json', JSON.stringify(state), 'application/json'); };
+    box.insertAdjacentHTML('beforeend', '<button class="srow" id="ics"><span>📅</span><b>تصدير للتقويم (ICS)</b><span class="ch">‹</span></button>');
+    document.getElementById('ics').onclick = () => { dlFile('studypath.ics', icsText(), 'text/calendar'); msg('تم تجهيز ملف التقويم مع تنبيهات'); };
+    box.insertAdjacentHTML('beforeend', `<div class="srow"><span>⏳</span><b>أقصى مذاكرة في اليوم (دقيقة)</b><input class="fld" id="dcap" type="number" min="30" max="600" step="15" style="width:100px" value="${state.dailyCap || 180}"></div>`);
+    document.getElementById('dcap').onchange = (e) => { state.dailyCap = Math.min(600, Math.max(30, parseInt(e.target.value, 10) || 180)); rebuildPlan(); msg('تم تحديث الخطة'); };
+    box.insertAdjacentHTML('beforeend', '<div class="srow"><span>✨</span><b>مفتاح Gemini API</b><input class="fld" id="gkey" type="password" dir="ltr" autocomplete="off" placeholder="AIza…" style="width:190px"></div><div class="srow"><span>🧠</span><b>موديل Gemini</b><input class="fld" id="gmod" type="text" dir="ltr" placeholder="gemini-flash-latest" style="width:190px"></div><div class="srow"><span>🤖</span><b>رابط Worker (بديل)</b><input class="fld" id="aiurl" type="url" dir="ltr" placeholder="https://xxx.workers.dev" style="width:190px"></div>');
+    { const bind = (id, key, okMsg, delMsg) => { const el = document.getElementById(id); try { el.value = localStorage.getItem(key) || ''; } catch (er) {} el.onchange = () => { try { const v = el.value.trim(); if (v) localStorage.setItem(key, v); else localStorage.removeItem(key); msg(v ? okMsg : delMsg); } catch (er) {} }; };
+      bind('gkey', 'unitrack:gemini', 'تم حفظ مفتاح Gemini على جهازك', 'تم مسح المفتاح'); bind('gmod', 'unitrack:gmodel', 'تم حفظ الموديل', 'رجع للموديل الافتراضي'); bind('aiurl', 'unitrack:ai', 'تم حفظ الرابط', 'تم مسح الرابط'); }
+    box.insertAdjacentHTML('beforeend', '<button class="srow" id="gpb"><span>🧮</span><b>جدول نقاط التقديرات</b><span class="ch">‹</span></button>');
+    document.getElementById('gpb').onclick = () => { const cur = Object.entries(state.gp && Object.keys(state.gp).length ? state.gp : GP).map(([k, x]) => k + '=' + x).join(','); const v = prompt('اكتب التقديرات بصيغة A=4,A-=3.7,B+=3.3 ...', cur); if (v === null) return; const o = {}; v.split(',').forEach((p) => { const [k, x] = p.split('='); if (k && !isNaN(parseFloat(x))) o[k.trim()] = parseFloat(x); }); if (Object.keys(o).length) { state.gp = o; save(state); msg('تم حفظ الجدول'); } else msg('الصيغة غير صحيحة'); };
+    let hasPrev = false; try { hasPrev = !!localStorage.getItem('unitrack:prev'); } catch (er) {}
+    if (hasPrev) { box.insertAdjacentHTML('beforeend', '<button class="srow" id="rst"><span>↩️</span><b>استرجاع بياناتي قبل آخر استيراد</b><span class="ch">‹</span></button>'); document.getElementById('rst').onclick = () => { try { const o = JSON.parse(localStorage.getItem('unitrack:prev')); Object.keys(state).forEach((k) => delete state[k]); Object.assign(state, o); save(state); localStorage.removeItem('unitrack:prev'); msg('تم الاسترجاع'); } catch (er) { msg('تعذّر الاسترجاع'); } }; }
+    box.insertAdjacentHTML('beforeend', '<button class="srow" id="wipe"><span>🗑</span><b style="color:var(--danger)">مسح كل بياناتي</b><span class="ch">‹</span></button>');
+    document.getElementById('wipe').onclick = () => { if (!confirm('هيتمسح كل شيء (المواد والامتحانات والمحاضرات والسجل). صدّر نسخة احتياطية الأول لو محتاجها. تكمل؟')) return; Object.keys(state).forEach((k) => delete state[k]); Object.assign(state, JSON.parse(JSON.stringify(defaults))); try { localStorage.removeItem('unitrack:started'); } catch (er) {} save(state); go('start'); };
+    document.getElementById('bi').onchange = async (e) => { try { const o = JSON.parse(await e.target.files[0].text()); const okc = (c) => c && typeof c.name === 'string' && c.credits > 0 && c.midterm >= 0; if (!o || !Array.isArray(o.courses) || !o.courses.every(okc) || !(o.cgpa >= 0 && o.cgpa <= 4) || !(o.prevHours >= 0)) throw 0; if (!confirm('هيتم استبدال بياناتك الحالية بالملف ده، وهتحتفظ بنسخة من بياناتك الحالية تقدر ترجعلها من الإعدادات. تكمل؟')) return; try { localStorage.setItem('unitrack:prev', JSON.stringify(state)); } catch (er) {} Object.keys(state).forEach((k) => delete state[k]); Object.assign(state, JSON.parse(JSON.stringify(defaults)), o); save(state); msg('تم الاستيراد'); } catch (er) { msg('الملف غير صالح أو ناقص'); } };
+    document.getElementById('tg').onclick = (e) => { state.light = !state.light; e.currentTarget.classList.toggle('on', !state.light); e.currentTarget.setAttribute('aria-checked', String(!state.light)); document.documentElement.classList.toggle('light', !!state.light); save(state); };
+    document.getElementById('back').onclick = () => go('dashboard');
+    return;
+  }
+  if (id === 'grad') {
+    const total = state.totalHours || 136, H = state.prevHours, h = state.curHours, sem = state.semester;
+    const rem = Math.max(0, total - H - h), pct = Math.min(100, Math.round(((H + h) / total) * 100)), left = total - H, goalT = state.goals[state.goal];
+    const need = left > 0 ? requiredGpa(state.cgpa, H, left, goalT) : null, maxF = left > 0 ? newCgpa(state.cgpa, H, left, 4) : state.cgpa;
+    const rows = [[h, 'بحمل ترمك الحالي (' + h + ' ساعة)'], [15, 'بـ 15 ساعة كل فصل'], [18, 'بـ 18 ساعة كل فصل']].map(([ld, l]) => { const n = rem ? Math.ceil(rem / ld) : 0, end = sem + n; return `<div class="kv"><span>${l}</span><b>${rem ? `الفصل ${end} • السنة ${Math.ceil(end / 2)}` : 'مكتمل'}</b></div>`; }).join('');
+    app.innerHTML = `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">🎓 مخطط التخرج</h2>
+      <div class="ring" style="--p:${pct};margin:0 auto 14px"><div><span>${pct}%<small>من الخطة</small></span></div></div>
+      <div class="stats"><div><small>المنجز</small><b>${H}</b></div><div><small>هذا الترم</small><b>${h}</b></div><div><small>المتبقي</small><b>${rem}</b></div></div>
+      <div class="sec"><div class="frow" style="margin:0"><label>إجمالي ساعات التخرج<small>حسب لائحة كليتك</small></label><input class="fld" id="th" type="number" min="1" value="${total}"></div></div>
+      <div class="sec"><h3 class="ah">موعد التخرج المتوقع</h3>${rows}<p class="note" style="margin:8px 0 0">أنت الآن في الفصل ${sem}، والحساب يتجاهل الفصول الصيفية.</p></div>
+      <div class="sec"><h3 class="ah">المعدل عند التخرج</h3>
+        <div class="kv"><span>أقصى CGPA ممكن</span><b>${f2(maxF)}</b></div><div class="kv"><span>هدفك</span><b>${f2(goalT)}</b></div>
+        <div class="kv"><span>متوسط مطلوب في باقي الساعات</span><b style="color:${need === null ? 'var(--ok)' : need <= 4 ? 'var(--ok)' : 'var(--danger)'}">${need === null ? '—' : need <= 4 ? f2(Math.max(need, 0)) : f2(need) + ' (غير ممكن)'}</b></div></div></div></div>`;
+    document.getElementById('th').onchange = (e) => { const v = parseInt(e.target.value, 10); if (v > 0) { state.totalHours = v; save(state); go('grad'); } };
+    document.getElementById('back').onclick = () => go('dashboard');
+    return;
+  }
+  if (id === 'plan') {
+    if (state.planDay !== dayKey(new Date())) rebuildPlan();
+    state.plan = state.plan || [];
+    let tab = 'day';
+    app.innerHTML = planScreen(state, tab);
+    let wkDay = (new Date().getDay() + 1) % 7;
+    const weekDraw = () => {
+      const days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+      const n = new Date(), s = new Date(n.getFullYear(), n.getMonth(), n.getDate() - ((n.getDay() + 1) % 7)), dt = new Date(s.getFullYear(), s.getMonth(), s.getDate() + wkDay), past = dt < new Date(n.getFullYear(), n.getMonth(), n.getDate());
+      const p2 = (v) => String(v).padStart(2, '0'), tm = (m) => `${Math.floor(m / 60) % 12 || 12}:${p2(m % 60)} ${m >= 720 ? 'م' : 'ص'}`;
+      const items = past ? [] : schedule()[dayKey(dt)] || []; let t = 18 * 60;
+      list.innerHTML = `<div class="wdays">${days.map((d, i) => `<button data-wd="${i}" class="${i === wkDay ? 'on' : ''}">${d}</button>`).join('')}</div>` + (items.length ? items.map((x, i) => { const a = t; t += x.mins + 10; return `<div class="wk c${i % 4}"><b dir="auto">${String(x.course + ' - ' + x.name).replace(/</g, '&lt;')}</b><span>${tm(a)} - ${tm(a + x.mins)} • ${x.note}</span></div>`; }).join('') : `<div class="empty">${past ? 'يوم مضى' : 'لا توجد مذاكرة مجدولة (ارفع محاضرات وحدّد مواعيد الامتحانات)'}</div>`);
+      list.querySelectorAll('[data-wd]').forEach((b) => b.onclick = () => { wkDay = +b.dataset.wd; weekDraw(); });
+    };
+    const list = document.getElementById('plist');
+    const draw = () => {
+      const total = state.plan.reduce((a, x) => a + x.mins, 0), done = state.plan.filter((x) => x.done).reduce((a, x) => a + x.mins, 0);
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById('pbar').style.width = pct + '%'; document.getElementById('ppct').textContent = pct + '%';
+      if (tab === 'week') { weekDraw(); return; }
+      if (tab === 'month') { const S = schedule(), ks = Object.keys(S).sort().slice(0, 31); list.innerHTML = ks.length ? ks.map((k) => { const m = S[k].reduce((a, x) => a + x.mins, 0), d = new Date(k + 'T00:00:00'); return `<div class="kv"><span>${AR_DAYS[d.getDay()]} ${d.getDate()} ${AR_MON[d.getMonth()]}</span><b>${S[k].length} مهام • ${fmtMin(m)}</b></div>`; }).join('') : '<div class="empty">لا توجد مذاكرة مجدولة</div>'; return; }
+      list.innerHTML = !state.plan.length ? '<div class="empty">ارفع محاضرات موادك وحدّد مواعيد الامتحانات وهتظهر خطة اليوم هنا</div>' : state.plan.map((x, i) => `<div class="prow ${x.done ? 'done' : ''}"><span class="num">${i + 1}</span><div class="px"><b dir="auto">${x.title}</b><span>${x.note ? x.note + ' • ' : ''}${x.mins} دقيقة</span></div><button class="rd" data-i="${i}" aria-label="إنجاز">${x.done ? '✓' : ''}</button></div>`).join('');
+    };
+    draw();
+    list.addEventListener('click', (e) => { const px = e.target.closest('.px'); if (px) { const ti = px.parentElement.querySelector('[data-i]').dataset.i; const c = state.courses.find((x) => state.plan[+ti].title.startsWith(x.name)); if (c) { curCourse = c.name; backTo = 'plan'; go('course'); } return; } const b = e.target.closest('[data-i]'); if (!b) return; const x = state.plan[+b.dataset.i]; x.done = !x.done; if (x.key) { state.done = state.done || {}; if (x.done) state.done[x.key] = 1; else delete state.done[x.key]; stamp(x.key, x.done); } save(state); draw(); });
+    app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { tab = b.dataset.tab; app.querySelectorAll('[data-tab]').forEach((o) => o.classList.toggle('on', o === b)); draw(); });
+    document.getElementById('back').onclick = () => go('dashboard');
+    return;
+  }
+  if (id === 'tasks') {
+    state.assign = state.assign || [];
+    const e = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    const lst = () => [...state.assign].sort((a, b) => a.done - b.done || new Date(a.ts) - new Date(b.ts)).map((a) => { const n = daysLeft(a.ts), c = a.done ? 'var(--muted)' : n < 0 ? 'var(--danger)' : n <= 2 ? 'var(--warn)' : 'var(--ok)', r = a.done ? 'تم التسليم' : n < 0 ? `متأخر ${-n} يوم` : n === 0 ? 'اليوم' : n === 1 ? 'غدًا' : `بعد ${n} يوم`; return `<div class="prow ${a.done ? 'done' : ''}"><button class="rd" data-t="${a.id}" aria-label="تم">${a.done ? '✓' : ''}</button><div class="px"><b dir="auto">${e(a.title)}</b><span dir="auto">${e(a.course)} • <span style="color:${c}">${r}</span></span></div><button class="del" data-x="${a.id}" aria-label="حذف">✕</button></div>`; }).join('') || '<div class="empty">مفيش تسليمات. ضيف أول تكليف من تحت.</div>';
+    const mount = () => {
+      app.innerHTML = `<div class="start"><div class="wiz pwrap"><button class="back" id="back" aria-label="رجوع">←</button><h2 class="ptitle">التسليمات</h2>${lst()}<div class="sec"><h3 class="ah">تسليم جديد</h3>${state.courses.length ? '' : '<p class="note">أضف موادك الأول من «المواد».</p>'}<div class="frow"><label>المادة</label><select class="fld" id="ac">${state.courses.map((c) => `<option>${e(c.name)}</option>`).join('')}</select></div><div class="frow"><label>العنوان</label><input class="fld" id="at" placeholder="Assignment 2"></div><div class="frow"><label>موعد التسليم</label><input class="fld" id="ad" type="date" value="${dayKey(new Date(Date.now() + 7 * 864e5))}"></div><button class="btn" id="aa" style="width:100%;margin-top:0">إضافة تسليم</button></div></div></div>`;
+      document.getElementById('back').onclick = () => go('dashboard');
+      app.querySelectorAll('[data-t]').forEach((b) => b.onclick = () => { const a = state.assign.find((x) => String(x.id) === b.dataset.t); a.done = !a.done; save(state); rebuildPlan(); mount(); });
+      app.querySelectorAll('[data-x]').forEach((b) => b.onclick = () => { state.assign = state.assign.filter((x) => String(x.id) !== b.dataset.x); save(state); rebuildPlan(); mount(); });
+      document.getElementById('aa').onclick = () => { const t = document.getElementById('at'), c = document.getElementById('ac').value, d = document.getElementById('ad').value; if (!t.value.trim() || !c || !d) { t.classList.add('err'); return; } state.assign.push({ id: Date.now(), course: c, title: t.value.trim(), ts: new Date(d + 'T23:00').toISOString(), done: false }); save(state); rebuildPlan(); mount(); };
+    };
+    mount();
+    return;
+  }
+  if (id === 'dashboard') {
+    if (state.planDay !== dayKey(new Date())) rebuildPlan();
+    if (!state.lastBackup) { state.lastBackup = Date.now(); save(state); }
+    app.innerHTML = dashboardScreen(state);
+    const dr = app.querySelector('.drawer');
+    document.getElementById('menu').onclick = () => dr.classList.toggle('open');
+    app.querySelectorAll('[data-go]').forEach((b) => b.onclick = () => go(b.dataset.go));
+    document.getElementById('bell').onclick = () => { const t = document.getElementById('toast'); t.textContent = state.courses.length && Date.now() - state.lastBackup > 14 * 864e5 ? 'عدّى أسبوعين على آخر نسخة احتياطية — صدّر بياناتك من الإعدادات' : 'لا توجد إشعارات جديدة'; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); };
+    return;
+  }
+  const r = routes.find((x) => x.id === id) || routes[0];
+  app.innerHTML = `<div class="layout"><aside class="sidebar"><div class="brand"><img src="${LOGO}" width="34" height="34" alt="">StudyPath</div>
+    <nav class="nav">${routes.map((x) => `<a href="#/${x.id}" class="${x.id === r.id ? 'active' : ''}"><span>${x.icon}</span><span>${x.ar}<small>${x.en}</small></span></a>`).join('')}</nav></aside>
+    <main>${r.render(state)}</main></div>`;
+}
+document.addEventListener('click', (e) => { const a = e.target.closest('a[href^="#/"]'); if (a) { e.preventDefault(); go(a.getAttribute('href').slice(2)); } });
+render();
+setInterval(remindTick, 20000);
+if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+window.addEventListener('popstate', () => { clearInterval(window.__ft); cur = location.hash.replace('#/', '') || null; render(); });
+</script>
+</body>
+</html>
